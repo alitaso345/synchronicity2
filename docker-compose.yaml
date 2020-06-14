@@ -1,0 +1,27 @@
+version: "3"
+services:
+  proxy:
+    build: ./proxy
+    ports:
+      - "8080:8080"
+      - "9901:9901"
+    links:
+      - "server"
+
+  server:
+    build: ./server
+    volumes:
+      - ./server/:/go/src/github.com/alitaso345/synchronicity2/server
+    ports:
+      - "9090:9090"
+    container_name: "server"
+
+  client:
+    build: ./client
+    command: "yarn dev"
+    volumes:
+      - ./client/src:/client/src
+      - ./client/public:/client/public
+    ports:
+      - "3000:3000"
+    stdin_open: true
