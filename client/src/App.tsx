@@ -53,6 +53,7 @@ export function App() {
         <input
           type="text"
           value={hashTag}
+          placeholder="#某isNight"
           onChange={e => updateHashTag(e.target.value)}
         />
 
@@ -60,6 +61,7 @@ export function App() {
         <input
           type="text"
           value={channel}
+          placeholder="#bou_is_twitch"
           onChange={e => updateChannel(e.target.value)}
         />
 
