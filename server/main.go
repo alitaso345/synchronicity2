@@ -34,32 +34,37 @@ type timelineService struct{}
 
 func (s *timelineService) Connect(req *pb.Setting, stream pb.Timeline_ConnectServer) error {
 	twitterDone := make(chan interface{})
+	defer close(twitterDone)
 	twitterCh := generateTwitterCh(twitterDone, req)
 
 	twitchDone := make(chan interface{})
+	defer close(twitchDone)
 	twitchCh := generateTwitchCh(twitchDone, req)
 
+loop:
 	for {
 		select {
 		case tweet := <-twitterCh:
 			err := stream.Send(&pb.Comment{Name: tweet.User.ScreenName, Message: tweet.Text, PlatformType: pb.PlatformType_TWITTER})
 			if err != nil {
 				log.Println("twitter stream error")
-				close(twitterDone)
-				return err
+				break loop
 			}
 		case chat := <-twitchCh:
 			err := stream.Send(&pb.Comment{Name: chat.User, Message: chat.Arguments[1], PlatformType: pb.PlatformType_TWITCH})
 			if err != nil {
 				log.Println("twitch stream error")
-				close(twitchDone)
-				return err
+				break loop
 			}
 		}
 	}
+
+	log.Println("disconnection...")
+	return nil
 }
 
 func generateTwitterCh(done <-chan interface{}, req *pb.Setting) <-chan *twitter.Tweet {
+	log.Println("new twitter connection...")
 	ch := make(chan *twitter.Tweet)
 	go func() {
 		defer func() {
@@ -86,7 +91,7 @@ func generateTwitterCh(done <-chan interface{}, req *pb.Setting) <-chan *twitter
 		filterParams := &twitter.StreamFilterParams{Track: []string{req.GetHashTag()}}
 		twitterStream, err := client.Streams.Filter(filterParams)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalf("can not connect to twitter: %s", err)
 		}
 		defer twitterStream.Stop()
 
