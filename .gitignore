@@ -1,5 +1,8 @@
 client/node_modules
 client/dist
+server/tmp
 
 # Local Netlify folder
 .netlify
+
+.env
