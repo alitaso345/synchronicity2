@@ -16,13 +16,13 @@ const convertToMessage = (res: Comment): Message => ({
   platform: res.getPlatformType()
 })
 
-export function App {
+export function App() {
   const [messages, update] = useState<Message[]>([])
 
   useEffect(
     () => {
       const setting = new Setting
-      setting.setHashTag('#mogra')
+      setting.setHashTag('#ありがサンキュー')
       setting.setChannelName('#mogra')
 
       const timelineClient = new TimelineClient('http://localhost:8080', {}, {})
