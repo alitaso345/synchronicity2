@@ -22,7 +22,7 @@ export function App() {
   useEffect(
     () => {
       const setting = new Setting
-      setting.setHashTag('#ありがサンキュー')
+      setting.setHashTag('#アニポケ')
       setting.setChannelName('#mogra')
 
       const timelineClient = new TimelineClient('http://localhost:8080', {}, {})
@@ -51,7 +51,7 @@ export function App() {
             className="platform-icon"
           >
             <img
-              src={item.platform === PlatformType.TWITTER ? "../Twitter_Social_Icon_Circle_Color.png" : "../TwitchGlitchPurple.png"}
+              src={item.platform === PlatformType.TWITTER ? "../public/Twitter_Social_Icon_Circle_Color.png" : "../public/TwitchGlitchPurple.png"}
               width={18}
               height={18}
             />
