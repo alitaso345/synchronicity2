@@ -1,5 +1,6 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/alitaso345/synchronicity2 v0.0.0-20200614040746-f0d1e87affcc h1:xJnrq3P//HIP65MRxnYSWhfmgsETxdQ3MPHmKgaVdmE=
 github.com/alitaso345/zatsu v0.0.0-20200613093736-801959e2ca99 h1:yodNwna290l5AuBok0Klk+CARPBHwxtAHv0sPygp620=
 github.com/alitaso345/zatsu v0.0.0-20200613093736-801959e2ca99/go.mod h1:Y0XEPiOqiPHjZVRtVGnPJiWgFjBBUivw0CTcDiPdTYo=
 github.com/cenkalti/backoff v2.1.1+incompatible h1:tKJnvO2kl0zmb/jA5UKAt4VoEVw1qxKWjE/Bpp46npY=

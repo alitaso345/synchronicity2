@@ -12,7 +12,7 @@ import (
 	"github.com/dghubble/oauth1"
 	"github.com/kelseyhightower/envconfig"
 
-	pb "github.com/alitaso345/zatsu/twi-grpc/proto"
+	pb "github.com/alitaso345/synchronicity2/server/timeline"
 	"google.golang.org/grpc"
 )
 
@@ -136,7 +136,7 @@ func generateTwitchCh(done <-chan interface{}, req *pb.Setting) <-chan *irc.Even
 }
 
 func main() {
-	port := ":50051"
+	port := ":9090"
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen port %v", port)
