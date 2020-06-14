@@ -8,6 +8,7 @@
     "@types/react-dom": "^16.9.8",
     "css-loader": "^3.6.0",
     "html-webpack-plugin": "^4.3.0",
+    "prettier": "^2.0.5",
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.5",
@@ -24,6 +25,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack-dev-server --host 0.0.0.0",
-    "typecheck": "tsc -p . --noEmit"
+    "typecheck": "tsc -p . --noEmit",
+    "format": "prettier --write src/*.{ts,tsx}"
   }
 }
