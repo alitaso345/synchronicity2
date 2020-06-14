@@ -1,7 +1,7 @@
-function App() {
+import React from 'react'
+
+export function App() {
   return (
-    <div>hello synchronicity2</div>
+    <div>hello synchronicity</div>
   )
 }
-
-export default App;
