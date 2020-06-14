@@ -32,7 +32,7 @@ type TwitchConfig struct {
 
 type timelineService struct{}
 
-func (s *timelineService) Connect(req *pb.Room, stream pb.Timeline_ConnectServer) error {
+func (s *timelineService) Connect(req *pb.Setting, stream pb.Timeline_ConnectServer) error {
 	twitterDone := make(chan interface{})
 	twitterCh := generateTwitterCh(twitterDone, req)
 
@@ -59,7 +59,7 @@ func (s *timelineService) Connect(req *pb.Room, stream pb.Timeline_ConnectServer
 	}
 }
 
-func generateTwitterCh(done <-chan interface{}, req *pb.Room) <-chan *twitter.Tweet {
+func generateTwitterCh(done <-chan interface{}, req *pb.Setting) <-chan *twitter.Tweet {
 	ch := make(chan *twitter.Tweet)
 	go func() {
 		defer func() {
@@ -98,7 +98,7 @@ func generateTwitterCh(done <-chan interface{}, req *pb.Room) <-chan *twitter.Tw
 	return ch
 }
 
-func generateTwitchCh(done <-chan interface{}, req *pb.Room) <-chan *irc.Event {
+func generateTwitchCh(done <-chan interface{}, req *pb.Setting) <-chan *irc.Event {
 	ch := make(chan *irc.Event)
 	go func() {
 		defer func() {
