@@ -17,15 +17,17 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@types/google-protobuf": "^3.7.2",
     "google-protobuf": "^3.12.2",
     "grpc-web": "^1.1.0",
+    "install": "^0.13.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && tsc -P server/tsconfig.json",
     "dev": "webpack-dev-server --host 0.0.0.0",
     "typecheck": "tsc -p . --noEmit",
-    "format": "prettier --write src/*.{ts,tsx}"
+    "format": "prettier --write src/*.{ts,tsx} && prettier --write server/*.ts"
   }
 }
