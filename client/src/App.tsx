@@ -4,6 +4,11 @@ import {emoteData} from './emoteData'
 import {Setting, Comment, PlatformType} from './timeline/timeline_pb'
 import {TimelineClient} from './timeline/TimelineServiceClientPb'
 
+const apiEndpoint =
+  process.env.NODE_ENV === 'production'
+    ? 'https://production.api'
+    : 'http://localhost:8080'
+
 type Message = {
   user: string
   text: string
@@ -28,7 +33,7 @@ export function App() {
     setting.setHashTag(hashTag)
     setting.setChannelName(channel)
 
-    const timelineClient = new TimelineClient('http://localhost:8080', {}, {})
+    const timelineClient = new TimelineClient(apiEndpoint, {}, {})
     const stream = timelineClient.connect(setting, {})
     stream.on('data', (response: Comment) => {
       const message = convertToMessage(response)
