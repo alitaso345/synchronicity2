@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/tls"
-	"fmt"
 	"log"
 	"net"
 
@@ -33,28 +32,30 @@ type TwitchConfig struct {
 type timelineService struct{}
 
 func (s *timelineService) Connect(req *pb.Setting, stream pb.Timeline_ConnectServer) error {
-	twitterDone := make(chan interface{})
-	defer close(twitterDone)
-	twitterCh := generateTwitterCh(twitterDone, req)
+	done := make(chan interface{})
+	defer close(done)
 
-	twitchDone := make(chan interface{})
-	defer close(twitchDone)
-	twitchCh := generateTwitchCh(twitchDone, req)
+	twitterCh := generateTwitterCh(done, req)
+	twitchCh := generateTwitchCh(done, req)
+
+	ctx := stream.Context()
 
 loop:
 	for {
 		select {
+		case <-ctx.Done():
+			log.Println("done!!!")
+			break loop
 		case tweet := <-twitterCh:
 			err := stream.Send(&pb.Comment{Name: tweet.User.ScreenName, Message: tweet.Text, PlatformType: pb.PlatformType_TWITTER})
 			if err != nil {
-				log.Println("twitter stream error")
-				break loop
+				log.Println("send twitter stream error")
+
 			}
 		case chat := <-twitchCh:
 			err := stream.Send(&pb.Comment{Name: chat.User, Message: chat.Arguments[1], PlatformType: pb.PlatformType_TWITCH})
 			if err != nil {
-				log.Println("twitch stream error")
-				break loop
+				log.Println("send twitch stream error")
 			}
 		}
 	}
@@ -84,7 +85,6 @@ func generateTwitterCh(done <-chan interface{}, req *pb.Setting) <-chan *twitter
 			if tweet.RetweetedStatus != nil {
 				return
 			}
-			fmt.Println(fmt.Sprintf("%s\n", tweet.Text))
 			ch <- tweet
 		}
 
@@ -123,7 +123,6 @@ func generateTwitchCh(done <-chan interface{}, req *pb.Setting) <-chan *irc.Even
 
 		con.AddCallback("001", func(e *irc.Event) { con.Join(req.ChannelName) })
 		con.AddCallback("PRIVMSG", func(e *irc.Event) {
-			fmt.Println(fmt.Sprintf("%s\n", e.Message()))
 			ch <- e
 		})
 		err := con.Connect(serverssl)
