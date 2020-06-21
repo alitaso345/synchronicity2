@@ -145,7 +145,7 @@ func main() {
 	if port == "" {
 		port = "9090"
 	}
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", ":" + port)
 	if err != nil {
 		log.Fatalf("failed to listen port %v", port)
 	}
