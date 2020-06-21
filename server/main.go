@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"log"
 	"net"
+	"os"
 
 	irc "github.com/thoj/go-ircevent"
 
@@ -140,7 +141,10 @@ func generateTwitchCh(done <-chan interface{}, req *pb.Setting) <-chan *irc.Even
 }
 
 func main() {
-	port := ":9090"
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "9090"
+	}
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen port %v", port)
