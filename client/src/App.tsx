@@ -4,10 +4,7 @@ import {emoteData} from './emoteData'
 import {Setting, Comment, PlatformType} from './timeline/timeline_pb'
 import {TimelineClient} from './timeline/TimelineServiceClientPb'
 
-const apiEndpoint =
-  process.env.NODE_ENV === 'production'
-    ? 'https://production.api'
-    : 'http://localhost:8080'
+const apiEndpoint = 'http://' + window.location.host
 
 type Message = {
   user: string
