@@ -1,9 +1,18 @@
-FROM golang:1.14
+FROM golang:1.14 as builder
 
 ENV GO111MODULE=on
 
-WORKDIR /go/src/github.com/alitaso345/synchronicity2/server
+WORKDIR /app
+
 COPY . .
-RUN go get github.com/pilu/fresh
-CMD ["fresh"]
+RUN go mod download
+
+RUN CGO_ENABLED=0 GOOS=linux go build -mod=readonly -v -o server
+
+FROM alpine:3
+RUN apk add --no-cache ca-certificates
+
+COPY --from=builder /app/server /server
+
+CMD ["/server"]
 EXPOSE 9090
