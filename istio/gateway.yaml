@@ -29,6 +29,8 @@ spec:
       route:
         - destination:
             host: server
+            port:
+              number: 9090
       corsPolicy:
         allowOrigin:
           - "*"
@@ -60,3 +62,5 @@ spec:
     - route:
         - destination:
             host: client
+            port:
+              number: 3000
