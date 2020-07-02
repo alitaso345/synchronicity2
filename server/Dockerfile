@@ -14,5 +14,5 @@ RUN apk add --no-cache ca-certificates
 
 COPY --from=builder /app/server /server
 
-CMD ["/server"]
+ENTRYPOINT ["/server"]
 EXPOSE 9090
