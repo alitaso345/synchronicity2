@@ -1,10 +1,10 @@
 import * as React from 'react'
-import {useState, useEffect} from 'react'
-import {emoteData} from './emoteData'
-import {Setting, Comment, PlatformType} from './timeline/timeline_pb'
-import {TimelineClient} from './timeline/TimelineServiceClientPb'
+import { useState, useEffect } from 'react'
+import { emoteData } from './emoteData'
+import { Setting, Comment, PlatformType } from './timeline/timeline_pb'
+import { TimelineClient } from './timeline/TimelineServiceClientPb'
 
-const apiEndpoint = 'http://' + window.location.host
+const apiEndpoint = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'http://' + window.location.host
 
 type Message = {
   user: string
@@ -23,6 +23,8 @@ export function App() {
   const [channel, updateChannel] = useState('#bou_is_twitch')
   const [submit, updateSubmit] = useState(false)
   const [messages, update] = useState<Message[]>([])
+
+  console.log(process.env.NODE_ENV)
 
   useEffect(() => {
     console.log(hashTag, channel)
@@ -91,7 +93,7 @@ export function App() {
               style={{
                 color: `${
                   item.platform === PlatformType.TWITTER ? '#00ACEE' : '#6441a5'
-                }`,
+                  }`,
                 fontFamily: `Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif`,
                 fontSize: '18px'
               }}
