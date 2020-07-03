@@ -9,7 +9,9 @@ services:
       - "server"
 
   server:
-    build: ./server
+    build:
+      context: ./server
+      dockerfile: ./server/Dockerfile.development
     volumes:
       - ./server/:/go/src/github.com/alitaso345/synchronicity2/server
     ports:
@@ -24,7 +26,9 @@ services:
       TWITTER_ACCESS_TOKEN_SECRET: "${TWITTER_ACCESS_TOKEN_SECRET}"
 
   client:
-    build: ./client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.development
     command: "yarn dev"
     volumes:
       - ./client/src:/client/src
