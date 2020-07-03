@@ -29,3 +29,34 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 9090
+          env:
+            - name: TWITCH_NICK
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITCH_NICK
+            - name: TWITCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITCH_PASSWORD
+            - name: TWITTER_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITTER_ACCESS_TOKEN
+            - name: TWITTER_ACCESS_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITTER_ACCESS_TOKEN_SECRET
+            - name: TWITTER_CONSUMER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITTER_CONSUMER_KEY
+            - name: TWITTER_CONSUMER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITTER_CONSUMER_SECRET
