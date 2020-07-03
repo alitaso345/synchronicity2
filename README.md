@@ -20,8 +20,17 @@ gcloud config set project project-id
 ```
 
 ```
-gcloud builds submit -t gcr.io/synchronicity2/synchronicity2-server server
-gcloud builds submit -t gcr.io/synchronicity2/synchronicity2-client client
+kubectl create secret generic server-secret --from-env-file=./.env
+```
+
+```
+docker build --tag=gcr.io/synchronicity2/synchronicity2-server --file=./Dockerfile .
+docker build --tag=gcr.io/synchronicity2/synchronicity2-client --file=./Dockerfile .
+```
+
+```
+docker push gcr.io/synchronicity2/synchronicity2-server
+docker push gcr.io/synchronicity2/synchronicity2-client
 ```
 
 ```
