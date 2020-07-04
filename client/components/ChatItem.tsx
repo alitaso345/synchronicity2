@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Message } from '../src/App'
 import { emoteData } from '../src/emoteData'
 import { PlatformType } from '../src/timeline/timeline_pb'
-import "./ChatItem.scss"
+import styles from "./ChatItem.module.scss"
 
 type Props = {
   index: number
@@ -13,7 +13,7 @@ export const ChatItem: React.FC<Props> = ({ item, index }) => (
   <div className="message-item" key={index}>
     <span className="platform-icon">
       <img
-        className="platformIconImage"
+        className={styles.platformIconImage}
         src={
           item.platform === PlatformType.TWITTER
             ? '../public/Twitter_Social_Icon_Circle_Color.png'
