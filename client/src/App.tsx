@@ -1,10 +1,14 @@
 import * as React from 'react'
-import { useState, useEffect } from 'react'
-import { Setting, Comment, PlatformType } from './timeline/timeline_pb'
-import { TimelineClient } from './timeline/TimelineServiceClientPb'
-import { ChatItem } from '../components/ChatItem'
+import {useState, useEffect} from 'react'
+import {Setting, Comment, PlatformType} from './timeline/timeline_pb'
+import {TimelineClient} from './timeline/TimelineServiceClientPb'
+import {ChatItem} from '../components/ChatItem'
+import styles from './App.module.scss'
 
-const apiEndpoint = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'http://' + window.location.host
+const apiEndpoint =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8080'
+    : 'http://' + window.location.host
 
 export type Message = {
   user: string
@@ -20,7 +24,7 @@ const convertToMessage = (res: Comment): Message => ({
 
 export function App() {
   const [hashTag, updateHashTag] = useState('#TM12HLIVE')
-  const [channel, updateChannel] = useState('#bou_is_twitch')
+  const [channel, updateChannel] = useState('#sunha_cos')
   const [submit, updateSubmit] = useState(false)
   const [messages, update] = useState<Message[]>([])
 
@@ -36,9 +40,9 @@ export function App() {
       const message = convertToMessage(response)
       update(_messages => {
         if (_messages.length > 50) {
-          _messages.pop()
+          _messages.shift()
         }
-        return [message, ..._messages]
+        return [..._messages, message]
       })
     })
 
@@ -48,9 +52,17 @@ export function App() {
     }
   }, [submit])
 
+  useEffect(() => {
+    const chatbox = document.getElementById('chatbox')
+    if (chatbox !== null) {
+      chatbox.scrollTop = chatbox.scrollHeight
+    }
+  }, [messages])
+
   return (
-    <>
-      <div>
+    <div className={styles.container}>
+      <div className={styles.settings}>
+        <h1>各種設定</h1>
         <div>Twitterハッシュタグ</div>
         <input
           type="text"
@@ -71,11 +83,13 @@ export function App() {
           <button onClick={() => updateSubmit(!submit)}>変更する</button>
         </div>
       </div>
-      <div>
-        {messages.map((item, index) => (
-          <ChatItem item={item} index={index} />
-        ))}
+      <div className={styles.bodybox}>
+        <div id="chatbox" className={styles.chatborder}>
+          {messages.map((item, index) => (
+            <ChatItem item={item} index={index} />
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   )
 }

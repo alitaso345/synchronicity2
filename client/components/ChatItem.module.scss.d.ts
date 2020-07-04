@@ -1,1 +1,1 @@
-export const platformIconImage: string;
+export const platformIconImage: string

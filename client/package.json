@@ -31,6 +31,6 @@
     "build": "npx webpack --mode production",
     "dev": "webpack-dev-server --host 0.0.0.0",
     "typecheck": "tsc -p . --noEmit",
-    "format": "prettier --write src/*.{ts,tsx}"
+    "format": "prettier --write \"./**/*.{ts,tsx}\""
   }
 }
