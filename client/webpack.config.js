@@ -13,6 +13,19 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.scss/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 2
+            }
+          },
+          "sass-loader"
+        ]
+      }
     ],
   },
   resolve: {

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { Setting, Comment, PlatformType } from './timeline/timeline_pb'
 import { TimelineClient } from './timeline/TimelineServiceClientPb'
-import { ChatItem } from './ChatItem'
+import { ChatItem } from '../components/ChatItem'
 
 const apiEndpoint = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'http://' + window.location.host
 
