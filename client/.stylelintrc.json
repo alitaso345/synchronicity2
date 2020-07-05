@@ -1,6 +1,9 @@
 {
   "extends": "stylelint-config-sass-guidelines",
   "rules": {
-    "selector-class-pattern": ".*"
+    "selector-class-pattern": ".*",
+    "scss/at-import-partial-extension-blacklist": [
+      ""
+    ]
   }
 }
