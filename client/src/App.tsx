@@ -31,7 +31,6 @@ export const App: React.FC = () => {
   const [messages, update] = useState<Message[]>([])
 
   useEffect(() => {
-    console.log(hashTag, channel)
     const setting = new Setting()
     setting.setHashTag(hashTag)
     setting.setChannelName(channel)
