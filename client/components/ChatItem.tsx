@@ -6,12 +6,11 @@ import styles from './ChatItem.module.scss'
 import {Text} from './Text'
 
 type Props = {
-  index: number
   item: Message
 }
 
-export const ChatItem: React.FC<Props> = ({item, index}) => (
-  <div className="message-item" key={index}>
+export const ChatItem: React.FC<Props> = ({item}) => (
+  <div className="message-item">
     <span className="platform-icon">
       <img
         className={styles.platformIconImage}

@@ -22,8 +22,8 @@ const convertToMessage = (res: Comment): Message => ({
   platform: res.getPlatformType()
 })
 
-export function App() {
-  const [hashTag, updateHashTag] = useState('#TM12HLIVE')
+export const App: React.FC = () => {
+  const [hashTag, updateHashTag] = useState('#都知事選を史上最大の投票率にしよう')
   const [channel, updateChannel] = useState('#sunha_cos')
   const [submit, updateSubmit] = useState(false)
   const [messages, update] = useState<Message[]>([])
@@ -86,7 +86,7 @@ export function App() {
       <div className={styles.bodybox}>
         <div id="chatbox" className={styles.chatborder}>
           {messages.map((item, index) => (
-            <ChatItem item={item} index={index} />
+            <ChatItem item={item} key={index} />
           ))}
         </div>
       </div>
