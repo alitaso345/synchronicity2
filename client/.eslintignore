@@ -1,2 +1,3 @@
 node_modules/*
 *.scss.d.ts
+src/timeline/*

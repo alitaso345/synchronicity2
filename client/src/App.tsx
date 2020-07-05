@@ -23,7 +23,9 @@ const convertToMessage = (res: Comment): Message => ({
 })
 
 export const App: React.FC = () => {
-  const [hashTag, updateHashTag] = useState('#都知事選を史上最大の投票率にしよう')
+  const [hashTag, updateHashTag] = useState(
+    '#都知事選を史上最大の投票率にしよう'
+  )
   const [channel, updateChannel] = useState('#sunha_cos')
   const [submit, updateSubmit] = useState(false)
   const [messages, update] = useState<Message[]>([])
