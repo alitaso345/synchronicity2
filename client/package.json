@@ -19,6 +19,8 @@
     "sass": "^1.26.9",
     "sass-loader": "^9.0.1",
     "style-loader": "^1.2.1",
+    "stylelint": "^13.6.1",
+    "stylelint-config-sass-guidelines": "^7.0.0",
     "ts-loader": "^7.0.5",
     "typed-scss-modules": "^1.4.0",
     "typescript": "^3.9.5",
@@ -38,6 +40,7 @@
     "build": "npx webpack --mode production",
     "dev": "webpack-dev-server --host 0.0.0.0",
     "typecheck": "tsc -p . --noEmit",
-    "lint:js": "npx eslint \"./**/*.{ts,tsx}\" --fix"
+    "lint:js": "npx eslint \"./**/*.{ts,tsx}\" --fix",
+    "lint:scss": "npx stylelint \"./**/*.scss\" --fix"
   }
 }
