@@ -29,6 +29,7 @@ export const App: React.FC = () => {
   const [channel, updateChannel] = useState('#sunha_cos2')
   const [submit, updateSubmit] = useState(false)
   const [messages, update] = useState<Message[]>([])
+  const [isDisplaySetting, updateSettingPanel] = useState('block')
 
   useEffect(() => {
     const setting = new Setting()
@@ -60,9 +61,19 @@ export const App: React.FC = () => {
     }
   }, [messages])
 
+  const changeDisplaySettingPanel = () => {
+    isDisplaySetting === 'none'
+      ? updateSettingPanel('block')
+      : updateSettingPanel('none')
+  }
+
   return (
-    <div className={styles.container}>
-      <div className={styles.settings}>
+    <>
+      <div
+        className={styles.indivisual}
+        onClick={() => changeDisplaySettingPanel()}
+      ></div>
+      <div className={styles.settings} style={{ display: isDisplaySetting }}>
         <h1>各種設定</h1>
         <div>Twitterハッシュタグ</div>
         <input
@@ -91,6 +102,6 @@ export const App: React.FC = () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   )
 }

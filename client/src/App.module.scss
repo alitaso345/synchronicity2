@@ -2,16 +2,20 @@
   display: flex;
 }
 
+.indivisual {
+  height: 50px;
+}
+
 .settings {
-  padding: 25px;
+  margin-bottom: 20px;
+  padding: 0 16px;
 }
 
 .bodybox {
   background-color: #fff;
   height: 80vh;
   margin: auto;
-  padding: 25px;
-  width: 40vw;
+  width: 80vw;
 }
 
 .chatborder {
@@ -21,8 +25,8 @@
   border-width: 3px;
   box-shadow: 5px 5px 5px #808080;
   height: 100%;
-  margin: 20px;
+  margin: -16px;
   overflow: scroll;
-  padding: 10px 15px;
+  padding: 16px;
   width: 100%;
 }
