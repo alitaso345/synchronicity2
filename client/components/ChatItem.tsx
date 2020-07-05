@@ -1,15 +1,15 @@
 import * as React from 'react'
-import {Message} from '../src/App'
-import {emoteData} from '../src/emoteData'
-import {PlatformType} from '../src/timeline/timeline_pb'
+import { Message } from '../src/App'
+import { emoteData } from '../src/emoteData'
+import { PlatformType } from '../src/timeline/timeline_pb'
 import styles from './ChatItem.module.scss'
-import {Text} from './Text'
+import { Text } from './Text'
 
 type Props = {
   item: Message
 }
 
-export const ChatItem: React.FC<Props> = ({item}) => (
+export const ChatItem: React.FC<Props> = ({ item }) => (
   <div className="message-item">
     <span className="platform-icon">
       <img

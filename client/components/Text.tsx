@@ -1,13 +1,13 @@
 import * as React from 'react'
 import styles from './Text.module.scss'
-import {PlatformType} from '../src/timeline/timeline_pb'
+import { PlatformType } from '../src/timeline/timeline_pb'
 
 type Maybe<T> = T | null
 
 export const TextSize = {
   L: 'L',
   M: 'M',
-  S: 'S'
+  S: 'S',
 } as const
 type TextSize = typeof TextSize[keyof typeof TextSize]
 
@@ -41,12 +41,12 @@ type Props = React.HTMLAttributes<HTMLSpanElement> & {
 export const Text: React.FC<Props> = ({
   children,
   size = TextSize.M,
-  platform = null
+  platform = null,
 }) => (
   <span
     style={{
       fontSize: sizeMap(size).toString() + 'px',
-      color: platformColorMap(platform)
+      color: platformColorMap(platform),
     }}
     className={styles.text}
   >

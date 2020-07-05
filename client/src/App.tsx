@@ -1,8 +1,8 @@
 import * as React from 'react'
-import {useState, useEffect} from 'react'
-import {Setting, Comment, PlatformType} from './timeline/timeline_pb'
-import {TimelineClient} from './timeline/TimelineServiceClientPb'
-import {ChatItem} from '../components/ChatItem'
+import { useState, useEffect } from 'react'
+import { Setting, Comment, PlatformType } from './timeline/timeline_pb'
+import { TimelineClient } from './timeline/TimelineServiceClientPb'
+import { ChatItem } from '../components/ChatItem'
 import styles from './App.module.scss'
 
 const apiEndpoint =
@@ -19,7 +19,7 @@ export type Message = {
 const convertToMessage = (res: Comment): Message => ({
   user: res.getName(),
   text: res.getMessage(),
-  platform: res.getPlatformType()
+  platform: res.getPlatformType(),
 })
 
 export const App: React.FC = () => {
@@ -39,7 +39,7 @@ export const App: React.FC = () => {
     const stream = timelineClient.connect(setting, {})
     stream.on('data', (response: Comment) => {
       const message = convertToMessage(response)
-      update(_messages => {
+      update((_messages) => {
         if (_messages.length > 50) {
           _messages.shift()
         }
@@ -69,7 +69,7 @@ export const App: React.FC = () => {
           type="text"
           value={hashTag}
           placeholder="#某isNight"
-          onChange={e => updateHashTag(e.target.value)}
+          onChange={(e) => updateHashTag(e.target.value)}
         />
 
         <div>Twitchチャンネル</div>
@@ -77,7 +77,7 @@ export const App: React.FC = () => {
           type="text"
           value={channel}
           placeholder="#bou_is_twitch"
-          onChange={e => updateChannel(e.target.value)}
+          onChange={(e) => updateChannel(e.target.value)}
         />
 
         <div>
