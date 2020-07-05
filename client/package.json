@@ -6,7 +6,11 @@
   "devDependencies": {
     "@types/react": "^16.9.36",
     "@types/react-dom": "^16.9.8",
+    "@typescript-eslint/eslint-plugin": "^3.5.0",
+    "@typescript-eslint/parser": "^3.5.0",
     "css-loader": "^3.6.0",
+    "eslint": "^7.4.0",
+    "eslint-plugin-react": "^7.20.3",
     "html-webpack-plugin": "^4.3.0",
     "prettier": "^2.0.5",
     "sass": "^1.26.9",
@@ -30,7 +34,6 @@
   "scripts": {
     "build": "npx webpack --mode production",
     "dev": "webpack-dev-server --host 0.0.0.0",
-    "typecheck": "tsc -p . --noEmit",
-    "format": "prettier --write \"./**/*.{ts,tsx}\""
+    "typecheck": "tsc -p . --noEmit"
   }
 }
