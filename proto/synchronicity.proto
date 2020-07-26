@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = ".;proto";
+
+service SynchronicityService {
+  rpc CreateUser(NewUserRequest) returns(UserResponse) {}
+  rpc GetUser(GetUserRequest) returns(UserResponse){}
+  rpc GetUsers(google.protobuf.Empty) returns(UsersResponse) {}
+  rpc UpdateUser(UpdateUserRequest) returns(UserResponse) {}
+  rpc GetTimeline(GetTimelineRequest) returns(stream TimelineResponse) {}
+}
+
+message User {
+  int64 id = 1;
+  string name = 2;
+  string twitterHashTag = 3;
+  string twitchChannel = 4;
+}
+
+message GetUserRequest {
+  string name = 1;
+}
+
+message NewUserRequest {
+  string name = 1;
+}
+
+message UpdateUserRequest {
+  User user = 1;
+}
+
+message UserResponse {
+  User user = 1;
+}
+
+message UsersResponse {
+  repeated User users = 1;
+}
+
+message GetTimelineRequest {
+  string userName = 1;
+}
+
+message TimelineResponse {
+  string name = 1;
+  string message = 2;
+  PlatformType platform_type = 3;
+}
+
+enum PlatformType {
+  TWITTER = 0;
+  TWITCH = 1;
+}

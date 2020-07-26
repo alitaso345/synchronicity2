@@ -1,14 +1,14 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true,
+    es6: true
   },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'prettier/@typescript-eslint',
-    'plugin:react/recommended',
+    'plugin:react/recommended'
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'prettier', 'react-hooks'],
@@ -17,13 +17,12 @@ module.exports = {
       2,
       {
         singleQuote: true,
-        semi: false,
-      },
+        semi: false
+      }
     ],
     'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-    '@typescript-eslint/no-explicit-any': 'off',
-  },
+    '@typescript-eslint/no-explicit-any': 'off'
+  }
 }
