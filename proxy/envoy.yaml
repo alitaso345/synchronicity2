@@ -22,7 +22,7 @@ static_resources:
                       routes:
                         - match: { prefix: "/" }
                           route:
-                            cluster: timeline_service
+                            cluster: synchronicity_service
                             max_grpc_timeout: 0s
                       cors:
                         allow_origin_string_match:
@@ -40,12 +40,12 @@ static_resources:
                   - name: envoy.cors
                   - name: envoy.router
   clusters:
-    - name: timeline_service
+    - name: synchronicity_service
       connect_timeout: 0.25s
       type: logical_dns
       http2_protocol_options: {}
       lb_policy: round_robin
-      hosts: [{ socket_address: { address: server, port_value: 9090 }}]
+      hosts: [{ socket_address: { address: server, port_value: 9000 }}]
       # hostsは deprecated になっているので、load_assignment に変更する
       # https://www.envoyproxy.io/docs/envoy/v1.9.0/api-v2/api/v2/cds.proto#envoy-api-field-cluster-load-assignment
       # https://qiita.com/TokyoYoshida/items/8f614dc5051926bda605
