@@ -40,6 +40,10 @@ const UserPage: NextPage<Props> = ({ name }) => {
         <div>
           <a href={`/users`}>ユーザー一覧</a>
         </div>
+
+        <div>
+          <a href={`/users/${name}/timeline`}>タイムライン表示</a>
+        </div>
       </>
     )
   )
