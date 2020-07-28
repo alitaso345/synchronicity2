@@ -21,6 +21,13 @@ services:
     ports:
       - "9000:9000"
     container_name: synchronicity2-server
+    environment:
+      TWITCH_PASSWORD: "${TWITCH_PASSWORD}"
+      TWITCH_NICK: "${TWITCH_NICK}"
+      TWITTER_CONSUMER_KEY: "${TWITTER_CONSUMER_KEY}"
+      TWITTER_CONSUMER_SECRET: "${TWITTER_CONSUMER_SECRET}"
+      TWITTER_ACCESS_TOKEN: "${TWITTER_ACCESS_TOKEN}"
+      TWITTER_ACCESS_TOKEN_SECRET: "${TWITTER_ACCESS_TOKEN_SECRET}"
 
   client:
     build:
