@@ -1,39 +1,33 @@
-version: "3"
+version: "3.8"
 services:
   proxy:
-    build: ./proxy
+    build:
+      context: .
+      dockerfile: ./docker/proxy.Dockerfile
     ports:
       - "8080:8080"
       - "9901:9901"
     links:
-      - "server"
+      - server
+    container_name: synchronicity2-proxy
 
   server:
     build:
-      context: ./server
-      dockerfile: ./server/Dockerfile.development
+      context: .
+      dockerfile: ./docker/server.development.Dockerfile
+    #      dockerfile: ./docker/server.Dockerfile
     volumes:
-      - ./server/:/go/src/github.com/alitaso345/synchronicity2/server
+      - ./:/app/
     ports:
-      - "9090:9090"
-    container_name: "server"
-    environment:
-      TWITCH_PASSWORD: "${TWITCH_PASSWORD}"
-      TWITCH_NICK: "${TWITCH_NICK}"
-      TWITTER_CONSUMER_KEY: "${TWITTER_CONSUMER_KEY}"
-      TWITTER_CONSUMER_SECRET: "${TWITTER_CONSUMER_SECRET}"
-      TWITTER_ACCESS_TOKEN: "${TWITTER_ACCESS_TOKEN}"
-      TWITTER_ACCESS_TOKEN_SECRET: "${TWITTER_ACCESS_TOKEN_SECRET}"
+      - "9000:9000"
+    container_name: synchronicity2-server
 
   client:
     build:
-      context: ./client
-      dockerfile: Dockerfile.development
-    command: "yarn dev"
+      context: .
+      dockerfile: ./docker/client.Dockerfile
     volumes:
-      - ./client/src:/client/src
-      - ./client/public:/client/public
+      - ./client:/client/
     ports:
       - "3000:3000"
-    stdin_open: true
-    tty: true
+    container_name: synchronicity2-client
