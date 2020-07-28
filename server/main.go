@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"database/sql"
 	"fmt"
 	"github.com/golang/protobuf/ptypes/empty"
@@ -9,6 +10,12 @@ import (
 	"net"
 	"os"
 	"time"
+
+	irc "github.com/thoj/go-ircevent"
+
+	"github.com/dghubble/go-twitter/twitter"
+	"github.com/dghubble/oauth1"
+	"github.com/kelseyhightower/envconfig"
 
 	pb "github.com/alitaso345/synchronicity2/proto"
 	_ "github.com/mattn/go-sqlite3"
@@ -21,11 +28,25 @@ var dbmap *gorp.DbMap
 const defaultTwitterHashTag = "#某isNight"
 const defaultTwitchChannel = "#bou_is_twitch"
 
-type UserService struct {
+const serverssl = "irc.chat.twitch.tv:6697"
+
+type TwitterConfig struct {
+	ConsumerKey       string `envconfig:"CONSUMER_KEY"`
+	ConsumerSecret    string `envconfig:"CONSUMER_SECRET"`
+	AccessToken       string `envconfig:"ACCESS_TOKEN"`
+	AccessTokenSecret string `envconfig:"ACCESS_TOKEN_SECRET"`
+}
+
+type TwitchConfig struct {
+	Nick     string
+	Password string
+}
+
+type SynchronicityService struct {
 	pb.UnimplementedSynchronicityServiceServer
 }
 
-func (service *UserService) CreateUser(ctx context.Context, request *pb.NewUserRequest) (*pb.UserResponse, error) {
+func (service *SynchronicityService) CreateUser(ctx context.Context, request *pb.NewUserRequest) (*pb.UserResponse, error) {
 	new := newUser(request.Name)
 	err := dbmap.Insert(&new)
 	errorHandler(err, "Insert failed")
@@ -34,7 +55,7 @@ func (service *UserService) CreateUser(ctx context.Context, request *pb.NewUserR
 	return &pb.UserResponse{User: &user}, nil
 }
 
-func (service *UserService) GetUser(ctx context.Context, request *pb.GetUserRequest) (*pb.UserResponse, error) {
+func (service *SynchronicityService) GetUser(ctx context.Context, request *pb.GetUserRequest) (*pb.UserResponse, error) {
 	var user User
 	err := dbmap.SelectOne(&user, "select * from users where name = ? order by user_id desc", request.Name)
 	errorHandler(err, "SelectOne failed")
@@ -47,7 +68,7 @@ func (service *UserService) GetUser(ctx context.Context, request *pb.GetUserRequ
 	return &pb.UserResponse{User: &pbUser}, nil
 }
 
-func (service *UserService) GetUsers(ctx context.Context, empty *empty.Empty) (*pb.UsersResponse, error) {
+func (service *SynchronicityService) GetUsers(ctx context.Context, empty *empty.Empty) (*pb.UsersResponse, error) {
 	var users []User
 	_, err := dbmap.Select(&users, "select * from users order by user_id")
 	errorHandler(err, "Select failed")
@@ -60,7 +81,7 @@ func (service *UserService) GetUsers(ctx context.Context, empty *empty.Empty) (*
 	return &pb.UsersResponse{Users: pbUsers}, nil
 }
 
-func (service *UserService) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.UserResponse, error) {
+func (service *SynchronicityService) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.UserResponse, error) {
 	var user User
 	user = User{Id: request.User.Id, Name: request.User.Name, TwitterHashTag: request.User.TwitterHashTag, TwitchChannel: request.User.TwitchChannel}
 	_, err := dbmap.Update(&user)
@@ -71,6 +92,120 @@ func (service *UserService) UpdateUser(ctx context.Context, request *pb.UpdateUs
 
 	pbUser := pb.User{Id: user.Id, Name: user.Name, TwitterHashTag: user.TwitterHashTag, TwitchChannel: user.TwitchChannel}
 	return &pb.UserResponse{User: &pbUser}, nil
+}
+
+func (service *SynchronicityService) GetTimeline(req *pb.GetTimelineRequest, stream pb.SynchronicityService_GetTimelineServer) error {
+	done := make(chan interface{})
+	defer close(done)
+
+	var user User
+	err := dbmap.SelectOne(&user, "select * from users where name = ? by user_id desc", req.UserName)
+	if err != nil {
+		log.Printf("Get timeline faild for %s\n", req.UserName)
+		return fmt.Errorf("Get timeline faild for %s\n", req.UserName)
+	}
+	twitterCh := generateTwitterCh(done, user.TwitchChannel)
+	twitchCh := generateTwitchCh(done, user.TwitchChannel)
+
+	ctx := stream.Context()
+
+loop:
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("done!!!")
+			break loop
+		case tweet := <-twitterCh:
+			err := stream.Send(&pb.TimelineResponse{Name: tweet.User.ScreenName, Message: tweet.Text, PlatformType: pb.PlatformType_TWITTER})
+			if err != nil {
+				log.Println("send twitter stream error")
+
+			}
+		case chat := <-twitchCh:
+			err := stream.Send(&pb.TimelineResponse{Name: chat.User, Message: chat.Arguments[1], PlatformType: pb.PlatformType_TWITCH})
+			if err != nil {
+				log.Println("send twitch stream error")
+			}
+		}
+	}
+
+	log.Println("disconnection...")
+	return nil
+}
+
+func generateTwitterCh(done <-chan interface{}, twitterHashTag string) <-chan *twitter.Tweet {
+	log.Println("new twitter connection...")
+	ch := make(chan *twitter.Tweet)
+	go func() {
+		defer func() {
+			log.Println("close twitter ch")
+			close(ch)
+		}()
+		var c TwitterConfig
+		envconfig.Process("TWITTER", &c)
+		config := oauth1.NewConfig(c.ConsumerKey, c.ConsumerSecret)
+		token := oauth1.NewToken(c.AccessToken, c.AccessTokenSecret)
+		httpClient := config.Client(oauth1.NoContext, token)
+
+		client := twitter.NewClient(httpClient)
+
+		demux := twitter.NewSwitchDemux()
+		demux.Tweet = func(tweet *twitter.Tweet) {
+			if tweet.RetweetedStatus != nil {
+				return
+			}
+			ch <- tweet
+		}
+
+		filterParams := &twitter.StreamFilterParams{Track: []string{twitterHashTag}}
+		twitterStream, err := client.Streams.Filter(filterParams)
+		if err != nil {
+			log.Fatalf("can not connect to twitter: %s", err)
+		}
+		defer twitterStream.Stop()
+
+		go demux.HandleChan(twitterStream.Messages)
+		<-done
+		return
+	}()
+
+	return ch
+}
+
+func generateTwitchCh(done <-chan interface{}, twitchChannel string) <-chan *irc.Event {
+	ch := make(chan *irc.Event)
+	go func() {
+		defer func() {
+			log.Println("close twitch ch")
+			close(ch)
+		}()
+
+		var config TwitchConfig
+		envconfig.Process("TWITCH", &config)
+
+		nick := config.Nick
+		con := irc.IRC(nick, nick)
+
+		con.Password = config.Password
+		con.UseTLS = true
+		con.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+		con.AddCallback("001", func(e *irc.Event) { con.Join(twitchChannel) })
+		con.AddCallback("PRIVMSG", func(e *irc.Event) {
+			ch <- e
+		})
+		err := con.Connect(serverssl)
+		if err != nil {
+			log.Fatalf("can not connect to twitch: %s", err)
+		}
+		defer con.Disconnect()
+
+		go con.Loop()
+		<-done
+		return
+	}()
+
+	return ch
 }
 
 func main() {
@@ -86,7 +221,7 @@ func main() {
 	errorHandler(err, "failed to listen")
 
 	server := grpc.NewServer()
-	pb.RegisterSynchronicityServiceServer(server, &UserService{})
+	pb.RegisterSynchronicityServiceServer(server, &SynchronicityService{})
 	err = server.Serve(lis)
 	errorHandler(err, "failed to serve")
 }
