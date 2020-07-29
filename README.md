@@ -8,24 +8,20 @@ $cp .env.default .env
 Input your environment variables
 
 ```
-$docker-compose up
+$docker-compose up proxy
+$cd client & yarn dev
 ```
-
-Open http://localhost:3000/
 
 # deploy
 
 ```
 gcloud config set project project-id
+gcloud config set compute/zone us-west1-c
 ```
 
 ```
-kubectl create secret generic server-secret --from-env-file=./.env
-```
-
-```
-docker build --tag=gcr.io/synchronicity2/synchronicity2-server --file=./Dockerfile .
-docker build --tag=gcr.io/synchronicity2/synchronicity2-client --file=./Dockerfile .
+docker build --tag=gcr.io/synchronicity2/synchronicity2-server --file=./docker/server.Dockerfile .
+docker build --tag=gcr.io/synchronicity2/synchronicity2-client --file=./docker/client.Dockerfile .
 ```
 
 ```
@@ -34,17 +30,11 @@ docker push gcr.io/synchronicity2/synchronicity2-client
 ```
 
 ```
-gcloud beta container clusters create synchronicity2-cluster --num-nodes=2 --preemptible --addons=Istio
+gcloud container clusters create synchronicity2-cluster --num-nodes=2 --preemptible --machine-type=g1-small
 gcloud container clusters get-credentials synchronicity2-cluster
 ```
 
 ```
-kubectl label namespace default istio-injection=enabled
-kubectl apply -f istio/server.yaml
-kubectl apply -f istio/client.yaml
-kubectl apply -f istio/gateway.yaml
-```
-
-```
-kubectl get service istio-ingressgateway -n istio-system
+kubectl create secret generic server-secret --from-env-file=./.env
+kubectl apply -f k8s
 ```
