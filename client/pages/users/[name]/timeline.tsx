@@ -6,8 +6,11 @@ import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
 import { ChatItem } from 'componenets/ChatItem'
 
-const TimeLine: NextPage = () => {
-  const { name } = useRouter().query
+type Props = {
+  name: string
+}
+
+const TimeLine: NextPage<Props> = ({ name }) => {
   const [responses, update] = useState<TimelineResponse[]>([])
 
   useEffect(() => {
@@ -40,6 +43,12 @@ const TimeLine: NextPage = () => {
       </div>
     </div>
   )
+}
+
+TimeLine.getInitialProps = async ({ query }) => {
+  return {
+    name: query.name as string,
+  }
 }
 
 export default TimeLine

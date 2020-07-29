@@ -14,8 +14,8 @@ export const ChatItem: React.FC<Props> = ({ item }) => (
       <img
         src={
           item.getPlatformType() === PlatformType.TWITTER
-            ? '../public/Twitter_Social_Icon_Circle_Color.png'
-            : '../public/TwitchGlitchPurple.png'
+            ? '/Twitter_Social_Icon_Circle_Color.png'
+            : '/TwitchGlitchPurple.png'
         }
       />
     </span>

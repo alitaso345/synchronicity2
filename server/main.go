@@ -99,12 +99,12 @@ func (service *SynchronicityService) GetTimeline(req *pb.GetTimelineRequest, str
 	defer close(done)
 
 	var user User
-	err := dbmap.SelectOne(&user, "select * from users where name = ? by user_id desc", req.UserName)
+	err := dbmap.SelectOne(&user, "select * from users where name = ? order by user_id desc", req.UserName)
 	if err != nil {
-		log.Printf("Get timeline faild for %s\n", req.UserName)
+		log.Printf("err: %v\nGet timeline faild for %s\n", err, req.UserName)
 		return fmt.Errorf("Get timeline faild for %s\n", req.UserName)
 	}
-	twitterCh := generateTwitterCh(done, user.TwitchChannel)
+	twitterCh := generateTwitterCh(done, user.TwitterHashTag)
 	twitchCh := generateTwitchCh(done, user.TwitchChannel)
 
 	ctx := stream.Context()

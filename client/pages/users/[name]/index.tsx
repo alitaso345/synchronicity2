@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NextPage } from 'next'
+import Link from 'next/link'
 import { User, GetUserRequest } from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
@@ -33,17 +34,17 @@ const UserPage: NextPage<Props> = ({ name }) => {
         <div>Twitterハッシュタグ: {user.getTwitterhashtag()}</div>
         <div>Twitchチャンネル: {user.getTwitchchannel()}</div>
 
-        <div>
-          <a href={`/users/${name}/edit`}>設定編集</a>
-        </div>
+        <Link href="/users/[name]/edit" as={`/users/${name}/edit`}>
+          <a>設定編集</a>
+        </Link>
 
-        <div>
-          <a href={`/users`}>ユーザー一覧</a>
-        </div>
+        <Link href="/users">
+          <a>ユーザー一覧</a>
+        </Link>
 
-        <div>
-          <a href={`/users/${name}/timeline`}>タイムライン表示</a>
-        </div>
+        <Link href="/users/[name]/timeline" as={`/users/${name}/timeline`}>
+          <a >タイムライン表示</a>
+        </Link>
       </>
     )
   )
