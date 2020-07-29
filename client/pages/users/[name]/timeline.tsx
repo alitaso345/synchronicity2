@@ -1,16 +1,15 @@
 import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import { GetTimelineRequest, TimelineResponse } from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
-import { ChatItem } from 'componenets/ChatItem'
+import { Timeline } from 'componenets/Timeline/Timeline'
 
 type Props = {
   name: string
 }
 
-const TimeLine: NextPage<Props> = ({ name }) => {
+const TimeLinePage: NextPage<Props> = ({ name }) => {
   const [responses, update] = useState<TimelineResponse[]>([])
 
   useEffect(() => {
@@ -34,21 +33,13 @@ const TimeLine: NextPage<Props> = ({ name }) => {
     }
   }, [])
 
-  return (
-    <div>
-      <div>
-        {responses.map((item, index) => (
-          <ChatItem item={item} key={index} />
-        ))}
-      </div>
-    </div>
-  )
+  return <Timeline responses={responses} />
 }
 
-TimeLine.getInitialProps = async ({ query }) => {
+TimeLinePage.getInitialProps = async ({ query }) => {
   return {
     name: query.name as string,
   }
 }
 
-export default TimeLine
+export default TimeLinePage
