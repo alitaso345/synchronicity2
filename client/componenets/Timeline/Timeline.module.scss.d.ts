@@ -1,2 +1,2 @@
 export const bodybox: string;
-export const chatborder: string;
+export const feedbox: string;
