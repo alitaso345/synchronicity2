@@ -51,7 +51,7 @@ func (service *SynchronicityService) CreateUser(ctx context.Context, request *pb
 	err := dbmap.Insert(&new)
 	errorHandler(err, "Insert failed")
 
-	user := pb.User{Id: 1, Name: new.Name, TwitterHashTag: new.TwitterHashTag, TwitchChannel: new.TwitchChannel}
+	user := pb.User{Id: new.Id, Name: new.Name, TwitterHashTag: new.TwitterHashTag, TwitchChannel: new.TwitchChannel}
 	return &pb.UserResponse{User: &user}, nil
 }
 
