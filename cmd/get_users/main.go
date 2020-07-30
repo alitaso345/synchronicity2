@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 	"time"
 
 	pb "github.com/alitaso345/synchronicity2/proto"
@@ -10,8 +11,14 @@ import (
 	"google.golang.org/grpc"
 )
 
+const defaultTarget = "localhost:8080"
+
 func main() {
-	conn, err := grpc.Dial("localhost:8080", grpc.WithInsecure(), grpc.WithBlock())
+	target := defaultTarget
+	if len(os.Args) > 1 {
+		target = os.Args[1]
+	}
+	conn, err := grpc.Dial(target, grpc.WithInsecure(), grpc.WithBlock())
 	errorHandler(err, "failed connection")
 	defer conn.Close()
 
