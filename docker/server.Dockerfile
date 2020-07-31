@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix netgo --ldflags '-extldflags "-static"' -v -o user-server server/main.go
 
-FROM scratch
+FROM alpine:3
 COPY --from=builder /app/user-server ./server/
 COPY --from=builder /app/server/user_db.bin ./server/
 
