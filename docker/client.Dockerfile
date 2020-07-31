@@ -12,7 +12,6 @@ WORKDIR /client
 COPY ./client/package.json .
 COPY ./client/yarn.lock .
 RUN yarn install --production
-COPY ./client/next.config.js .
 COPY ./client/public/ .
 COPY --from=builder /build/.next ./.next
 ENTRYPOINT ["yarn"]
