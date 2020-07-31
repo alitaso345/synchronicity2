@@ -12,7 +12,7 @@ WORKDIR /client
 COPY ./client/package.json .
 COPY ./client/yarn.lock .
 RUN yarn install --production
-COPY ./client/public/ .
+COPY ./client/public/ ./public
 COPY --from=builder /build/.next ./.next
 ENTRYPOINT ["yarn"]
 CMD ["start", "-p", "3000"]
