@@ -14,7 +14,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
   const [twitchChannel, setTwitchChannel] = useState('')
 
   useEffect(() => {
-    const userServiceClient = new SynchronicityServiceClient(apiEndpoint)
+    const userServiceClient = new SynchronicityServiceClient(apiEndpoint(window.location.host))
     const request = new GetUserRequest()
     request.setName(name)
     userServiceClient.getUser(request, {}, (err, res) => {
@@ -29,7 +29,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
   }, [])
 
   const submitUpdate = useCallback(() => {
-    const userServiceClient = new SynchronicityServiceClient(apiEndpoint)
+    const userServiceClient = new SynchronicityServiceClient(apiEndpoint(window.location.host))
     const request = new UpdateUserRequest()
     const updatedUser = new User()
     updatedUser.setId(user.getId())

@@ -16,7 +16,7 @@ const TimeLinePage: NextPage<Props> = ({ name }) => {
     const request = new GetTimelineRequest()
     request.setUsername(name as string)
 
-    const service = new SynchronicityServiceClient(apiEndpoint, {}, {})
+    const service = new SynchronicityServiceClient(apiEndpoint(window.location.host), {}, {})
     const stream = service.getTimeline(request, {})
     stream.on('data', (response: TimelineResponse) => {
       update((_responses) => {

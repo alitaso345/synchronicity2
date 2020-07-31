@@ -13,7 +13,7 @@ const UserPage: NextPage<Props> = ({ name }) => {
   const [user, setUser] = useState<User>(null)
 
   useEffect(() => {
-    const userServiceClient = new SynchronicityServiceClient(apiEndpoint)
+    const userServiceClient = new SynchronicityServiceClient(apiEndpoint(window.location.host))
     const request = new GetUserRequest()
     request.setName(name)
     userServiceClient.getUser(request, {}, (err, res) => {

@@ -9,7 +9,7 @@ const UsersIndexPage: NextPage = () => {
   const [users, setUsers] = useState<Array<User>>([])
 
   useEffect(() => {
-    const userServiceClient = new SynchronicityServiceClient(apiEndpoint)
+    const userServiceClient = new SynchronicityServiceClient(apiEndpoint(window.location.host))
     userServiceClient.getUsers(new Empty(), {}, (_, res) => {
       const usersList = res.getUsersList()
       setUsers(usersList)
