@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+  labels:
+    app: server
+spec:
+  ports:
+    - name: grpc-web
+      port: 9000
+  selector:
+    app: server
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: server
+        version: v1
+    spec:
+      containers:
+        - name: server
+          image: gcr.io/synchronicity2/synchronicity2-server
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9000
+          env:
+            - name: TWITCH_NICK
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITCH_NICK
+            - name: TWITCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITCH_PASSWORD
+            - name: TWITTER_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITTER_ACCESS_TOKEN
+            - name: TWITTER_ACCESS_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITTER_ACCESS_TOKEN_SECRET
+            - name: TWITTER_CONSUMER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITTER_CONSUMER_KEY
+            - name: TWITTER_CONSUMER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: TWITTER_CONSUMER_SECRET

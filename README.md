@@ -36,5 +36,11 @@ gcloud container clusters get-credentials synchronicity2-cluster
 
 ```
 kubectl create secret generic server-secret --from-env-file=./.env
-kubectl apply -f k8s
+```
+
+```
+gcloud beta container clusters create synchronicity2-cluster --num-nodes=2 --preemptible --machine-type=g1-small --addons=Istio
+gcloud container clusters get-credentials synchronicity2-cluster
+kubectl label namespace default istio-injection=enabled
+kubectl apply -f istio # kubectl apply -f k8s
 ```
