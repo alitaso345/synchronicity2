@@ -10,7 +10,9 @@ type Props = {
 export const ChatItem: React.FC<Props> = ({ item }) => (
   <div className="flex items-center mb-1">
     <img
-      className="w-6 h-6 rounded-full mr-1"
+      className="rounded-full mr-1"
+      width="20"
+      height="20"
       src={
         item.getPlatformType() === PlatformType.TWITTER
           ? '/Twitter_Social_Icon_Circle_Color.png'
