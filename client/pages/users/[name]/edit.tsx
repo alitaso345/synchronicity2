@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import Router from 'next/router'
+import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import { GetUserRequest, UpdateUserRequest, User } from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
@@ -14,7 +14,9 @@ const UserEdit: NextPage<Props> = ({ name }) => {
   const [twitchChannel, setTwitchChannel] = useState('')
 
   useEffect(() => {
-    const userServiceClient = new SynchronicityServiceClient(apiEndpoint(window.location.host))
+    const userServiceClient = new SynchronicityServiceClient(
+      apiEndpoint(window.location.host)
+    )
     const request = new GetUserRequest()
     request.setName(name)
     userServiceClient.getUser(request, {}, (err, res) => {
@@ -29,7 +31,9 @@ const UserEdit: NextPage<Props> = ({ name }) => {
   }, [])
 
   const submitUpdate = useCallback(() => {
-    const userServiceClient = new SynchronicityServiceClient(apiEndpoint(window.location.host))
+    const userServiceClient = new SynchronicityServiceClient(
+      apiEndpoint(window.location.host)
+    )
     const request = new UpdateUserRequest()
     const updatedUser = new User()
     updatedUser.setId(user.getId())
@@ -45,39 +49,95 @@ const UserEdit: NextPage<Props> = ({ name }) => {
       }
 
       alert('設定を更新しました')
-      Router.push('/users/[name]', `/users/${res.getUser().getName()}`)
     })
   }, [user, twitterHashTag, twitchChannel])
 
   return (
-    <>
-      <h1>設定編集</h1>
-      <div>
-        <label>Twitterハッシュタグ</label>
-        <input
-          type="text"
-          placeholder="#某isNight"
-          value={twitterHashTag}
-          onChange={(e) => setTwitterHashTag(e.target.value)}
-        />
-      </div>
+    user && (
+      <div className="container m-auto">
+        <h1 className="font-sans text-gray-800 text-center text-6xl">
+          設定編集
+        </h1>
 
-      <div>
-        <label>Twitchチャンネル</label>
-        <input
-          type="text"
-          placeholder="#bou_is_twitch"
-          value={twitchChannel}
-          onChange={(e) => setTwitchChannel(e.target.value)}
-        />
-      </div>
+        <form className="m-auto w-full max-w-lg">
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                Twitchチャンネル
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <input
+                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                type="text"
+                placeholder="#bou_is_twitch"
+                value={twitchChannel}
+                onChange={(e) => setTwitchChannel(e.target.value)}
+              />
+            </div>
+          </div>
 
-      <button onClick={submitUpdate}>更新する</button>
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                Twitterハッシュタグ
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <input
+                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                type="text"
+                placeholder="#某isNight"
+                value={twitterHashTag}
+                onChange={(e) => setTwitterHashTag(e.target.value)}
+              />
+            </div>
+          </div>
 
-      <div>
-        <a href={`/users/${name}`}>ユーザー詳細</a>
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
+              <button
+                className="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                type="button"
+                onClick={submitUpdate}
+              >
+                更新する
+              </button>
+            </div>
+          </div>
+
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
+              <button
+                className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                type="button"
+              >
+                <Link href="/">トップへ戻る</Link>
+              </button>
+            </div>
+          </div>
+
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
+              <button
+                className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                type="button"
+              >
+                <Link
+                  href="/users/[name]/timeline"
+                  as={`/users/${user.getName()}/timeline`}
+                >
+                  タイムラインを見る
+                </Link>
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
-    </>
+    )
   )
 }
 

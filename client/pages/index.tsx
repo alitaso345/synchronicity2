@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NextPage } from 'next'
+import Link from 'next/link'
 import { User } from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb'
@@ -41,10 +42,20 @@ const RootPage: NextPage = () => {
                 </div>
                 <div className="px-6 py-4">
                   <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-                    {user.getTwitterhashtag()}
+                    <Link
+                      href="/users/[name]/edit"
+                      as={`/users/${user.getName()}/edit`}
+                    >
+                      {user.getTwitterhashtag()}
+                    </Link>
                   </span>
                   <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-                    {user.getTwitchchannel()}
+                    <Link
+                      href="/users/[name]/edit"
+                      as={`/users/${user.getName()}/edit`}
+                    >
+                      {user.getTwitchchannel()}
+                    </Link>
                   </span>
                 </div>
               </div>
