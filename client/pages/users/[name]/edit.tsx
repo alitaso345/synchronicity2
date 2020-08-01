@@ -52,6 +52,30 @@ const UserEdit: NextPage<Props> = ({ name }) => {
     })
   }, [user, twitterHashTag, twitchChannel])
 
+  const initSetting = useCallback(() => {
+    const userServiceClient = new SynchronicityServiceClient(
+      apiEndpoint(window.location.host)
+    )
+    const request = new UpdateUserRequest()
+    const updatedUser = new User()
+    updatedUser.setId(user.getId())
+    updatedUser.setName(user.getName())
+    updatedUser.setTwitterhashtag('#某isNight')
+    updatedUser.setTwitchchannel('#bou_is_twitch')
+    request.setUser(updatedUser)
+
+    userServiceClient.updateUser(request, {}, (err, res) => {
+      if (err) {
+        alert('設定の更新に失敗しました')
+        return
+      }
+
+      setTwitterHashTag('#某isNight')
+      setTwitchChannel('#bou_is_twitch')
+      alert('設定を更新しました')
+    })
+  }, [user])
+
   return (
     user && (
       <div className="container">
@@ -103,6 +127,19 @@ const UserEdit: NextPage<Props> = ({ name }) => {
                 onClick={submitUpdate}
               >
                 更新する
+              </button>
+            </div>
+          </div>
+
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
+              <button
+                className="shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                type="button"
+                onClick={initSetting}
+              >
+                『某 is Festa!!!』用の設定に初期化する
               </button>
             </div>
           </div>
