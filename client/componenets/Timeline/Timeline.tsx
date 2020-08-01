@@ -10,19 +10,18 @@ type Props = {
 
 export const Timeline: React.FC<Props> = ({ responses }) => {
   useEffect(() => {
-    const feedbox = document.getElementById('feedbox')
-    if (feedbox !== null) {
-      feedbox.scrollTop = feedbox.scrollHeight
+    const element = document.documentElement
+    if (element !== null) {
+      const bottom = element.scrollHeight - element.clientHeight
+      window.scroll(0, bottom)
     }
   }, [responses])
 
   return (
-    <div className={styles.bodybox}>
-      <div id="feedbox" className={styles.feedbox}>
-        {responses.map((item, index) => (
-          <ChatItem item={item} key={index} />
-        ))}
-      </div>
+    <div id="feedbox" className={styles.feedbox}>
+      {responses.map((item, index) => (
+        <ChatItem item={item} key={index} />
+      ))}
     </div>
   )
 }
