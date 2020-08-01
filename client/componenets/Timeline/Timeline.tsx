@@ -2,7 +2,6 @@ import * as React from 'react'
 import { useEffect } from 'react'
 import { TimelineResponse } from 'proto/synchronicity_pb'
 import { ChatItem } from 'componenets/ChatItem/ChatItem'
-import styles from './Timeline.module.scss'
 
 type Props = {
   responses: TimelineResponse[]
@@ -18,7 +17,7 @@ export const Timeline: React.FC<Props> = ({ responses }) => {
   }, [responses])
 
   return (
-    <div id="feedbox" className={styles.feedbox}>
+    <div id="feedbox">
       {responses.map((item, index) => (
         <ChatItem item={item} key={index} />
       ))}

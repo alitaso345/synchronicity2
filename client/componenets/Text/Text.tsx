@@ -1,5 +1,4 @@
 import * as React from 'react'
-import styles from './Text.module.scss'
 import { PlatformType } from 'proto/synchronicity_pb'
 
 type Maybe<T> = T | null
@@ -43,13 +42,12 @@ export const Text: React.FC<Props> = ({
   size = TextSize.M,
   platform = null,
 }) => (
-    <span
-      style={{
-        fontSize: sizeMap(size).toString() + 'px',
-        color: platformColorMap(platform),
-      }}
-      className={styles.text}
-    >
-      {children}
-    </span>
-  )
+  <span
+    style={{
+      fontSize: sizeMap(size).toString() + 'px',
+      color: platformColorMap(platform),
+    }}
+  >
+    {children}
+  </span>
+)

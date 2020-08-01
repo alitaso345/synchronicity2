@@ -5,16 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "watch:tsm": "npx tsm componenets --watch "
+    "start": "next start"
   },
   "dependencies": {
     "google-protobuf": "^4.0.0-rc.1",
     "grpc-web": "^1.2.0",
     "next": "9.4.4",
     "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "sass": "^1.26.10"
+    "react-dom": "16.13.1"
   },
   "devDependencies": {
     "@types/google-protobuf": "^3.7.2",
@@ -29,11 +27,9 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
-    "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.0.5",
     "tailwindcss": "^1.6.0",
-    "typed-scss-modules": "^2.0.1",
     "typescript": "^3.9.7"
   },
   "husky": {
