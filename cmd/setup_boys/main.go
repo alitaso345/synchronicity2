@@ -17,7 +17,7 @@ func main() {
 
 	client := pb.NewSynchronicityServiceClient(conn)
 
-	boys := []string{"Muxek_06E", "zawaziro", "R29_D2", "9c5s", "stepjump_hazumu", "beatrooper", "kehatorunka", "loveimasforever", "cryptpsy", "kazami_akira", "shiriajp", "neri_25", "Crouton_RTLIA", "kicodadada", "alitaso"}
+	boys := []string{"Muxek_06E", "zawaziro", "R29_D2", "9c5s", "stepjump_hazumu", "beatrooper", "kehatorunka", "loveimasforever", "cryptpsy", "kazami_akira", "shiriajp", "neri_25", "Crouton_RTLIA", "kicodadada", "yuki_sonogenic", "taisyoku_P", "alitaso"}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	for _, name := range boys {
