@@ -54,7 +54,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
 
   return (
     user && (
-      <div className="container m-auto">
+      <div className="container">
         <h1 className="font-sans text-gray-800 text-center text-6xl">
           設定編集
         </h1>
@@ -110,29 +110,31 @@ const UserEdit: NextPage<Props> = ({ name }) => {
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
-              <button
-                className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                type="button"
-              >
-                <Link href="/">トップへ戻る</Link>
-              </button>
+              <Link href="/">
+                <button
+                  className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                  type="button"
+                >
+                  ホームへ戻る
+                </button>
+              </Link>
             </div>
           </div>
 
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
-              <button
-                className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                type="button"
+              <Link
+                href="/users/[name]/timeline"
+                as={`/users/${user.getName()}/timeline`}
               >
-                <Link
-                  href="/users/[name]/timeline"
-                  as={`/users/${user.getName()}/timeline`}
+                <button
+                  className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                  type="button"
                 >
                   タイムラインを見る
-                </Link>
-              </button>
+                </button>
+              </Link>
             </div>
           </div>
         </form>

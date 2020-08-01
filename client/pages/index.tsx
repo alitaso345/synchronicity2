@@ -20,7 +20,7 @@ const RootPage: NextPage = () => {
   }, [])
 
   return (
-    <div className="container m-auto">
+    <div className="container">
       <h1 className="font-sans text-gray-800 text-center text-6xl">
         Synchronicity
       </h1>
@@ -32,11 +32,17 @@ const RootPage: NextPage = () => {
                 key={index}
                 className="max-w-xs rounded overflow-hidden shadow-lg"
               >
-                <img
-                  className="w-full"
-                  src={`${user.getName()}.jpg`}
-                  alt="Sunset in the mountains"
-                />
+                <Link
+                  href="/users/[name]/timeline"
+                  as={`/users/${user.getName()}/timeline`}
+                >
+                  <img
+                    className="w-full cursor-pointer transform motion-reduce:transform-none hover:-translate-y-1 hover:scale-110 transition ease-in-out duration-300"
+                    src={`${user.getName()}.jpg`}
+                    alt="screen image"
+                  />
+                </Link>
+
                 <div className="px-6 py-4">
                   <div className="font-bold text-xl mb-2">{user.getName()}</div>
                 </div>

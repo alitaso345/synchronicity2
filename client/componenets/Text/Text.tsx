@@ -43,6 +43,7 @@ export const Text: React.FC<Props> = ({
   platform = null,
 }) => (
   <span
+    className="font-sans"
     style={{
       fontSize: sizeMap(size).toString() + 'px',
       color: platformColorMap(platform),

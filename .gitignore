@@ -1,6 +1,7 @@
 client/node_modules
 client/dist
 server/tmp
+server/user_db.bin
 
 # Local Netlify folder
 .netlify

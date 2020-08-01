@@ -8,18 +8,18 @@ type Props = {
 }
 
 export const ChatItem: React.FC<Props> = ({ item }) => (
-  <div className="message-item">
-    <span className="platform-icon">
-      <img
-        src={
-          item.getPlatformType() === PlatformType.TWITTER
-            ? '/Twitter_Social_Icon_Circle_Color.png'
-            : '/TwitchGlitchPurple.png'
-        }
-      />
-    </span>
+  <div className="flex items-center mb-1">
+    <img
+      className="w-6 h-6 rounded-full mr-1"
+      src={
+        item.getPlatformType() === PlatformType.TWITTER
+          ? '/Twitter_Social_Icon_Circle_Color.png'
+          : '/TwitchGlitchPurple.png'
+      }
+    />
 
-    <Text platform={item.getPlatformType()}>{item.getName()} </Text>
+    <Text platform={item.getPlatformType()}>{item.getName()}</Text>
+    <span className="mr-1" />
 
     {item
       .getMessage()
