@@ -81,12 +81,16 @@ const UserEdit: NextPage<Props> = ({ name }) => {
     <>
       <Header />
       {user && (
-        <div className="container">
+        <div className="container px-6">
           <h1 className="font-sans text-gray-800 text-center text-6xl">
             設定編集
           </h1>
 
           <form className="m-auto w-full max-w-lg">
+            <h2 className="font-sans text-grap-800 text-center text-4xl">
+              コメント取得設定
+            </h2>
+
             <div className="md:flex md:items-center mb-6">
               <div className="md:w-1/3">
                 <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -121,47 +125,99 @@ const UserEdit: NextPage<Props> = ({ name }) => {
               </div>
             </div>
 
-            <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3"></div>
-              <div className="md:w-2/3">
-                <button
-                  className="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                  type="button"
-                  onClick={submitUpdate}
-                >
-                  更新する
-                </button>
-              </div>
-            </div>
+            <h2 className="font-sans text-grap-800 text-center text-4xl">
+              コメント表示設定(実装中)
+            </h2>
 
             <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3"></div>
-              <div className="md:w-2/3">
-                <button
-                  className="shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                  type="button"
-                  onClick={initSetting}
-                >
-                  『某 is Festa!!!』用の設定に初期化する
-                </button>
+              <div className="md:w-1/3">
+                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                  フォントサイズ
+                </label>
               </div>
-            </div>
-
-            <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3"></div>
-              <div className="md:w-2/3">
-                <Link
-                  href="/users/[name]/timeline"
-                  as={`/users/${user.getName()}/timeline`}
-                >
-                  <button
-                    className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                    type="button"
+              <div className="md:w-2/3 relative">
+                <select className="block appearance-none w-full bg-gray-200 py-2 px-4 border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+                  <option>text-xs</option>
+                  <option>text-sm</option>
+                  <option>text-base</option>
+                  <option>text-lg</option>
+                  <option>text-xl</option>
+                  <option>text-2xl</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg
+                    className="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
                   >
-                    タイムラインを見る
-                  </button>
-                </Link>
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
               </div>
+            </div>
+
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                  アイコンサイズ
+                </label>
+              </div>
+              <div className="md:w-2/3 relative">
+                <select className="block appearance-none w-full bg-gray-200 py-2 px-4 border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+                  <option>xs</option>
+                  <option>sm</option>
+                  <option>base</option>
+                  <option>lg</option>
+                  <option>xl</option>
+                  <option>2xl</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg
+                    className="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <p className="block text-red-500 text-xs italic">
+                コメント取得設定のみが初期化されます
+              </p>
+              <button
+                className="shadow w-full bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                type="button"
+                onClick={initSetting}
+              >
+                『某 is Festa!!!』用の設定に初期化する
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <button
+                className="shadow w-full bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                type="button"
+                onClick={submitUpdate}
+              >
+                更新する
+              </button>
+            </div>
+
+            <div>
+              <Link
+                href="/users/[name]/timeline"
+                as={`/users/${user.getName()}/timeline`}
+              >
+                <button
+                  className="shadow w-full bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                  type="button"
+                >
+                  タイムラインを見る
+                </button>
+              </Link>
             </div>
           </form>
         </div>
