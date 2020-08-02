@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { emoteData } from 'componenets/emoteData'
+import { emoteData } from 'components/emoteData'
 import { TimelineResponse, PlatformType } from 'proto/synchronicity_pb'
-import { Text } from 'componenets/Text/Text'
+import { Text } from 'components/Text/Text'
 
 type Props = {
   item: TimelineResponse

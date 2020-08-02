@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect } from 'react'
 import { TimelineResponse } from 'proto/synchronicity_pb'
-import { ChatItem } from 'componenets/ChatItem/ChatItem'
+import { ChatItem } from 'components/ChatItem/ChatItem'
 
 type Props = {
   responses: TimelineResponse[]

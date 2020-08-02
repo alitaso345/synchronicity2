@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { GetUserRequest, UpdateUserRequest, User } from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
-import Header from 'componenets/Header/Header'
+import Header from 'components/Header/Header'
 
 type Props = {
   name: string

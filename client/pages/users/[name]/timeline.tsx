@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { GetTimelineRequest, TimelineResponse } from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
-import { Timeline } from 'componenets/Timeline/Timeline'
+import { Timeline } from 'components/Timeline/Timeline'
 
 type Props = {
   name: string

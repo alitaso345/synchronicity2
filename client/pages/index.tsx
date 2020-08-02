@@ -5,7 +5,7 @@ import { User } from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb'
 import { apiEndpoint } from 'resources/constants'
-import Header from 'componenets/Header/Header'
+import Header from 'components/Header/Header'
 
 const RootPage: NextPage = () => {
   const [users, setUsers] = useState<Array<User>>([])
