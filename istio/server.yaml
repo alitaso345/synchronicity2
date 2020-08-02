@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: gcr.io/synchronicity2/synchronicity2-server
+          image: gcr.io/synchronicity2/synchronicity2-server:v2
           imagePullPolicy: Always
           ports:
             - containerPort: 9000
