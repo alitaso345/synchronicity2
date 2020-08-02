@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { GetUserRequest, UpdateUserRequest, User } from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
+import Header from 'componenets/Header/Header'
 
 type Props = {
   name: string
@@ -77,106 +78,95 @@ const UserEdit: NextPage<Props> = ({ name }) => {
   }, [user])
 
   return (
-    user && (
-      <div className="container">
-        <h1 className="font-sans text-gray-800 text-center text-6xl">
-          設定編集
-        </h1>
+    <>
+      <Header />
+      {user && (
+        <div className="container">
+          <h1 className="font-sans text-gray-800 text-center text-6xl">
+            設定編集
+          </h1>
 
-        <form className="m-auto w-full max-w-lg">
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3">
-              <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                Twitchチャンネル
-              </label>
+          <form className="m-auto w-full max-w-lg">
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                  Twitchチャンネル
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                  type="text"
+                  placeholder="#bou_is_twitch"
+                  value={twitchChannel}
+                  onChange={(e) => setTwitchChannel(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="md:w-2/3">
-              <input
-                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                type="text"
-                placeholder="#bou_is_twitch"
-                value={twitchChannel}
-                onChange={(e) => setTwitchChannel(e.target.value)}
-              />
-            </div>
-          </div>
 
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3">
-              <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                Twitterハッシュタグ
-              </label>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                  Twitterハッシュタグ
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                  type="text"
+                  placeholder="#某isNight"
+                  value={twitterHashTag}
+                  onChange={(e) => setTwitterHashTag(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="md:w-2/3">
-              <input
-                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                type="text"
-                placeholder="#某isNight"
-                value={twitterHashTag}
-                onChange={(e) => setTwitterHashTag(e.target.value)}
-              />
-            </div>
-          </div>
 
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3"></div>
-            <div className="md:w-2/3">
-              <button
-                className="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                type="button"
-                onClick={submitUpdate}
-              >
-                更新する
-              </button>
-            </div>
-          </div>
-
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3"></div>
-            <div className="md:w-2/3">
-              <button
-                className="shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                type="button"
-                onClick={initSetting}
-              >
-                『某 is Festa!!!』用の設定に初期化する
-              </button>
-            </div>
-          </div>
-
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3"></div>
-            <div className="md:w-2/3">
-              <Link href="/">
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3"></div>
+              <div className="md:w-2/3">
                 <button
-                  className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                  className="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                   type="button"
+                  onClick={submitUpdate}
                 >
-                  ホームへ戻る
+                  更新する
                 </button>
-              </Link>
+              </div>
             </div>
-          </div>
 
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3"></div>
-            <div className="md:w-2/3">
-              <Link
-                href="/users/[name]/timeline"
-                as={`/users/${user.getName()}/timeline`}
-              >
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3"></div>
+              <div className="md:w-2/3">
                 <button
-                  className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                  className="shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                   type="button"
+                  onClick={initSetting}
                 >
-                  タイムラインを見る
+                  『某 is Festa!!!』用の設定に初期化する
                 </button>
-              </Link>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
-    )
+
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3"></div>
+              <div className="md:w-2/3">
+                <Link
+                  href="/users/[name]/timeline"
+                  as={`/users/${user.getName()}/timeline`}
+                >
+                  <button
+                    className="shadow bg-gray-900 hover:bg-gray-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                    type="button"
+                  >
+                    タイムラインを見る
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
+    </>
   )
 }
 
