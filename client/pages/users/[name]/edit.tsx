@@ -1,10 +1,18 @@
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
-import { GetUserRequest, UpdateUserRequest, User } from 'proto/synchronicity_pb'
+import {
+  GetUserRequest,
+  UpdateUserRequest,
+  User,
+  TimelineResponse,
+  PlatformType,
+} from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
 import Header from 'components/Header/Header'
+import { ChatItem } from 'components/ChatItem/ChatItem'
+import { TextSize, TextSizeType } from 'components/Text/Text'
 
 type Props = {
   name: string
@@ -13,6 +21,14 @@ const UserEdit: NextPage<Props> = ({ name }) => {
   const [user, setUser] = useState<User>(null)
   const [twitterHashTag, setTwitterHashTag] = useState('')
   const [twitchChannel, setTwitchChannel] = useState('')
+  const [fontSize, setFontSize] = useState(TextSize.M.toString())
+
+  const itemMock: TimelineResponse = new TimelineResponse()
+  itemMock.setName('ino_tac')
+  itemMock.setMessage(
+    '私まわ〜る mograInotaku 、君はおど〜る mograWildP 、ミラーボール・ラ〜ブ mograKz ！って歌いながらバリウム検査の回転台に乗るワ'
+  )
+  itemMock.setPlatformType(PlatformType.TWITTER)
 
   useEffect(() => {
     const userServiceClient = new SynchronicityServiceClient(
@@ -136,13 +152,16 @@ const UserEdit: NextPage<Props> = ({ name }) => {
                 </label>
               </div>
               <div className="md:w-2/3 relative">
-                <select className="block appearance-none w-full bg-gray-200 py-2 px-4 border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-                  <option>text-xs</option>
-                  <option>text-sm</option>
-                  <option>text-base</option>
-                  <option>text-lg</option>
-                  <option>text-xl</option>
-                  <option>text-2xl</option>
+                <select
+                  onChange={(e) => setFontSize(e.target.value)}
+                  className="block appearance-none w-full bg-gray-200 py-2 px-4 border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                >
+                  <option>{TextSize.XS}</option>
+                  <option>{TextSize.S}</option>
+                  <option>{TextSize.M}</option>
+                  <option>{TextSize.L}</option>
+                  <option>{TextSize.XL}</option>
+                  <option>{TextSize.XXL}</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                   <svg
@@ -206,7 +225,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
               </button>
             </div>
 
-            <div>
+            <div className="mb-6">
               <Link
                 href="/users/[name]/timeline"
                 as={`/users/${user.getName()}/timeline`}
@@ -222,6 +241,10 @@ const UserEdit: NextPage<Props> = ({ name }) => {
           </form>
         </div>
       )}
+
+      <div className="flex justify-center">
+        <ChatItem item={itemMock} textSize={fontSize as TextSizeType} />
+      </div>
     </>
   )
 }

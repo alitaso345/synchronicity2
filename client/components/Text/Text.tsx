@@ -4,20 +4,29 @@ import { PlatformType } from 'proto/synchronicity_pb'
 type Maybe<T> = T | null
 
 export const TextSize = {
-  L: 'L',
-  M: 'M',
+  XS: 'XS',
   S: 'S',
+  M: 'M',
+  L: 'L',
+  XL: 'XL',
+  XXL: 'XXL',
 } as const
-type TextSize = typeof TextSize[keyof typeof TextSize]
+export type TextSizeType = typeof TextSize[keyof typeof TextSize]
 
-const sizeMap = (size: TextSize) => {
+const sizeMap = (size: TextSizeType) => {
   switch (size) {
+    case TextSize.XXL:
+      return 'text-2xl'
+    case TextSize.XL:
+      return 'text-xl'
     case TextSize.L:
-      return 20
+      return 'text-lg'
     case TextSize.M:
-      return 16
+      return 'text-base'
     case TextSize.S:
-      return 12
+      return 'text-sm'
+    case TextSize.XS:
+      return 'text-xs'
   }
 }
 
@@ -33,7 +42,7 @@ const platformColorMap = (platform: Maybe<PlatformType>) => {
 }
 
 type Props = React.HTMLAttributes<HTMLSpanElement> & {
-  size?: TextSize
+  size?: TextSizeType
   platform?: PlatformType
 }
 
@@ -43,9 +52,8 @@ export const Text: React.FC<Props> = ({
   platform = null,
 }) => (
   <span
-    className="font-sans"
+    className={`font-sans ${sizeMap(size)}`}
     style={{
-      fontSize: sizeMap(size).toString() + 'px',
       color: platformColorMap(platform),
     }}
   >
