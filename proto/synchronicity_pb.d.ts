@@ -15,6 +15,15 @@ export class User extends jspb.Message {
   getTwitchchannel(): string;
   setTwitchchannel(value: string): User;
 
+  getTextsize(): string;
+  setTextsize(value: string): User;
+
+  getTextcolor(): string;
+  setTextcolor(value: string): User;
+
+  getIconsize(): string;
+  setIconsize(value: string): User;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): User.AsObject;
   static toObject(includeInstance: boolean, msg: User): User.AsObject;
@@ -29,6 +38,9 @@ export namespace User {
     name: string,
     twitterhashtag: string,
     twitchchannel: string,
+    textsize: string,
+    textcolor: string,
+    iconsize: string,
   }
 }
 

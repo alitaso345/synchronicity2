@@ -17,6 +17,9 @@ message User {
   string name = 2;
   string twitterHashTag = 3;
   string twitchChannel = 4;
+  string textSize = 5;
+  string textColor = 6;
+  string iconSize = 7;
 }
 
 message GetUserRequest {

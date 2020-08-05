@@ -226,7 +226,10 @@ proto.User.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, 0),
     name: jspb.Message.getFieldWithDefault(msg, 2, ""),
     twitterhashtag: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    twitchchannel: jspb.Message.getFieldWithDefault(msg, 4, "")
+    twitchchannel: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    textsize: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    textcolor: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    iconsize: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -278,6 +281,18 @@ proto.User.deserializeBinaryFromReader = function(msg, reader) {
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setTwitchchannel(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTextsize(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTextcolor(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setIconsize(value);
       break;
     default:
       reader.skipField();
@@ -333,6 +348,27 @@ proto.User.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       4,
+      f
+    );
+  }
+  f = message.getTextsize();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getTextcolor();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getIconsize();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
       f
     );
   }
@@ -408,6 +444,60 @@ proto.User.prototype.getTwitchchannel = function() {
  */
 proto.User.prototype.setTwitchchannel = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string textSize = 5;
+ * @return {string}
+ */
+proto.User.prototype.getTextsize = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.User} returns this
+ */
+proto.User.prototype.setTextsize = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string textColor = 6;
+ * @return {string}
+ */
+proto.User.prototype.getTextcolor = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.User} returns this
+ */
+proto.User.prototype.setTextcolor = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string iconSize = 7;
+ * @return {string}
+ */
+proto.User.prototype.getIconsize = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.User} returns this
+ */
+proto.User.prototype.setIconsize = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
 };
 
 
