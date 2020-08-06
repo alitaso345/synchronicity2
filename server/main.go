@@ -5,11 +5,12 @@ import (
 	"crypto/tls"
 	"database/sql"
 	"fmt"
-	"github.com/golang/protobuf/ptypes/empty"
 	"log"
 	"net"
 	"os"
 	"time"
+
+	"github.com/golang/protobuf/ptypes/empty"
 
 	irc "github.com/thoj/go-ircevent"
 
@@ -27,6 +28,9 @@ var dbmap *gorp.DbMap
 
 const defaultTwitterHashTag = "#某isNight"
 const defaultTwitchChannel = "#bou_is_twitch"
+const defaultTextSize Size = M
+const defaultTextColor Color = BLACK
+const defaultIconSize Size = M
 
 const serverssl = "irc.chat.twitch.tv:6697"
 
@@ -42,6 +46,103 @@ type TwitchConfig struct {
 	Password string
 }
 
+type Size int
+
+const (
+	XS Size = iota
+	S
+	M
+	L
+	XL
+	XXL
+)
+
+func (s Size) String() string {
+	switch s {
+	case XS:
+		return "XS"
+	case S:
+		return "S"
+	case M:
+		return "M"
+	case L:
+		return "L"
+	case XL:
+		return "XL"
+	case XXL:
+		return "XXL"
+	default:
+		return "M"
+	}
+}
+
+func ToSize(s string) Size {
+	switch s {
+	case "XS":
+		return XS
+	case "S":
+		return S
+	case "M":
+		return M
+	case "L":
+		return L
+	case "XL":
+		return XL
+	case "XXL":
+		return XXL
+	default:
+		return M
+	}
+}
+
+type Color int
+
+const (
+	BLACK Color = iota
+	WHITE
+	GRAY
+	RED
+	ORANGE
+	YELLOW
+	GREEN
+	TEAL
+	BLUE
+	INDIGO
+	PURPLE
+	PINK
+)
+
+func (c Color) String() string {
+	switch c {
+	case BLACK:
+		return "BLACK"
+	case WHITE:
+		return "WHITE"
+	case GRAY:
+		return "GRAY"
+	case RED:
+		return "RED"
+	case ORANGE:
+		return "ORANGE"
+	case YELLOW:
+		return "YELLOW"
+	case GREEN:
+		return "GREEN"
+	case TEAL:
+		return "TEAL"
+	case BLUE:
+		return "BLUE"
+	case INDIGO:
+		return "INDIGO"
+	case PURPLE:
+		return "PURPLE"
+	case PINK:
+		return "PINK"
+	default:
+		return "BLACK"
+	}
+}
+
 type SynchronicityService struct {
 	pb.UnimplementedSynchronicityServiceServer
 }
@@ -51,7 +152,7 @@ func (service *SynchronicityService) CreateUser(ctx context.Context, request *pb
 	err := dbmap.Insert(&new)
 	errorHandler(err, "Insert failed")
 
-	user := pb.User{Id: new.Id, Name: new.Name, TwitterHashTag: new.TwitterHashTag, TwitchChannel: new.TwitchChannel}
+	user := pb.User{Id: new.Id, Name: new.Name, TwitterHashTag: new.TwitterHashTag, TwitchChannel: new.TwitchChannel, TextSize: new.TextSize, TextColor: new.TextColor, IconSize: new.IconSize}
 	return &pb.UserResponse{User: &user}, nil
 }
 
@@ -64,7 +165,7 @@ func (service *SynchronicityService) GetUser(ctx context.Context, request *pb.Ge
 		return &pb.UserResponse{User: nil}, fmt.Errorf("Not Found %s", request.Name)
 	}
 
-	pbUser := pb.User{Id: user.Id, Name: user.Name, TwitterHashTag: user.TwitterHashTag, TwitchChannel: user.TwitchChannel}
+	pbUser := pb.User{Id: user.Id, Name: user.Name, TwitterHashTag: user.TwitterHashTag, TwitchChannel: user.TwitchChannel, TextSize: user.TextSize, TextColor: user.TextColor, IconSize: user.IconSize}
 	return &pb.UserResponse{User: &pbUser}, nil
 }
 
@@ -75,7 +176,7 @@ func (service *SynchronicityService) GetUsers(ctx context.Context, empty *empty.
 
 	var pbUsers []*pb.User
 	for _, u := range users {
-		user := pb.User{Id: u.Id, Name: u.Name, TwitterHashTag: u.TwitterHashTag, TwitchChannel: u.TwitchChannel}
+		user := pb.User{Id: u.Id, Name: u.Name, TwitterHashTag: u.TwitterHashTag, TwitchChannel: u.TwitchChannel, TextSize: u.TextSize, TextColor: u.TextColor, IconSize: u.IconSize}
 		pbUsers = append(pbUsers, &user)
 	}
 	return &pb.UsersResponse{Users: pbUsers}, nil
@@ -83,14 +184,22 @@ func (service *SynchronicityService) GetUsers(ctx context.Context, empty *empty.
 
 func (service *SynchronicityService) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.UserResponse, error) {
 	var user User
-	user = User{Id: request.User.Id, Name: request.User.Name, TwitterHashTag: request.User.TwitterHashTag, TwitchChannel: request.User.TwitchChannel}
+	user = User{
+		Id:             request.User.Id,
+		Name:           request.User.Name,
+		TwitterHashTag: request.User.TwitterHashTag,
+		TwitchChannel:  request.User.TwitchChannel,
+		TextSize:       request.User.TextSize,
+		TextColor:      request.User.TextColor,
+		IconSize:       request.User.IconSize,
+	}
 	_, err := dbmap.Update(&user)
 	if err != nil {
 		log.Printf("Update failed %s", request.User.Name)
 		return &pb.UserResponse{User: nil}, fmt.Errorf("Update failed %s", request.User.Name)
 	}
 
-	pbUser := pb.User{Id: user.Id, Name: user.Name, TwitterHashTag: user.TwitterHashTag, TwitchChannel: user.TwitchChannel}
+	pbUser := pb.User{Id: user.Id, Name: user.Name, TwitterHashTag: user.TwitterHashTag, TwitchChannel: user.TwitchChannel, TextSize: user.TextSize, TextColor: user.TextColor, IconSize: user.IconSize}
 	return &pb.UserResponse{User: &pbUser}, nil
 }
 
@@ -243,6 +352,9 @@ type User struct {
 	Name           string `db:",size:50"`
 	TwitterHashTag string `db:",size:50"`
 	TwitchChannel  string `db:",size:50"`
+	TextSize       string
+	TextColor      string
+	IconSize       string
 	Created        int64
 }
 
@@ -251,6 +363,9 @@ func newUser(name string) User {
 		Name:           name,
 		TwitterHashTag: defaultTwitterHashTag,
 		TwitchChannel:  defaultTwitchChannel,
+		TextSize:       defaultTextSize.String(),
+		TextColor:      defaultTextColor.String(),
+		IconSize:       defaultIconSize.String(),
 		Created:        time.Now().UnixNano(),
 	}
 }
