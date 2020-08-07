@@ -183,17 +183,18 @@ func (service *SynchronicityService) GetUsers(ctx context.Context, empty *empty.
 }
 
 func (service *SynchronicityService) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.UserResponse, error) {
+	log.Println("processing UpdateUser...")
 	var user User
-	user = User{
-		Id:             request.User.Id,
-		Name:           request.User.Name,
-		TwitterHashTag: request.User.TwitterHashTag,
-		TwitchChannel:  request.User.TwitchChannel,
-		TextSize:       request.User.TextSize,
-		TextColor:      request.User.TextColor,
-		IconSize:       request.User.IconSize,
-	}
-	_, err := dbmap.Update(&user)
+	err := dbmap.SelectOne(&user, "select * from users where user_id = ?", request.User.Id)
+
+	user.Name = request.User.Name
+	user.TwitterHashTag = request.User.TwitterHashTag
+	user.TwitchChannel = request.User.TwitchChannel
+	user.TextSize = request.User.TextSize
+	user.TextColor = request.User.TextColor
+	user.IconSize = request.User.IconSize
+
+	_, err = dbmap.Update(&user)
 	if err != nil {
 		log.Printf("Update failed %s", request.User.Name)
 		return &pb.UserResponse{User: nil}, fmt.Errorf("Update failed %s", request.User.Name)

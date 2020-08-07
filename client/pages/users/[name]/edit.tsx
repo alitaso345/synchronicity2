@@ -44,6 +44,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
       setUser(res.getUser())
       setTwitterHashTag(res.getUser().getTwitterhashtag())
       setTwitchChannel(res.getUser().getTwitchchannel())
+      setFontSize(res.getUser().getTextsize())
     })
   }, [])
 
@@ -57,6 +58,10 @@ const UserEdit: NextPage<Props> = ({ name }) => {
     updatedUser.setName(user.getName())
     updatedUser.setTwitterhashtag(twitterHashTag)
     updatedUser.setTwitchchannel(twitchChannel)
+    console.log(fontSize)
+    updatedUser.setTextsize(fontSize)
+    updatedUser.setTextcolor('BLACK')
+    updatedUser.setIconsize('M')
     request.setUser(updatedUser)
 
     userServiceClient.updateUser(request, {}, (err, res) => {
@@ -67,7 +72,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
 
       alert('設定を更新しました')
     })
-  }, [user, twitterHashTag, twitchChannel])
+  }, [user, twitterHashTag, twitchChannel, fontSize])
 
   const initSetting = useCallback(() => {
     const userServiceClient = new SynchronicityServiceClient(
@@ -153,6 +158,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
               </div>
               <div className="md:w-2/3 relative">
                 <select
+                  value={fontSize}
                   onChange={(e) => setFontSize(e.target.value)}
                   className="block appearance-none w-full bg-gray-200 py-2 px-4 border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                 >
