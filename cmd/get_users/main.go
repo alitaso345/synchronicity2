@@ -30,7 +30,10 @@ func main() {
 	errorHandler(err, "failed to create user")
 
 	for _, user := range res.Users {
-		log.Printf("ID: %d, NAME: %s, TWITTER_HASH_TAG: %s, TWITCH_CHANNEL: %s\n", user.Id, user.Name, user.TwitterHashTag, user.TwitchChannel)
+		log.Printf(
+			"ID: %d, NAME: %s, TWITTER_HASH_TAG: %s, TWITCH_CHANNEL: %s, TEXT_SIZE: %s, TEXT_COLOR: %s, ICON_SIZE: %s\n",
+			user.Id, user.Name, user.TwitterHashTag, user.TwitchChannel, user.TextSize, user.TextColor, user.IconSize,
+		)
 	}
 }
 

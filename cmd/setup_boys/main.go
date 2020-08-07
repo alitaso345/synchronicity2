@@ -2,10 +2,11 @@ package main
 
 import (
 	"context"
-	pb "github.com/alitaso345/synchronicity2/proto"
-	"google.golang.org/grpc"
 	"log"
 	"time"
+
+	pb "github.com/alitaso345/synchronicity2/proto"
+	"google.golang.org/grpc"
 )
 
 func main() {
@@ -26,6 +27,9 @@ func main() {
 			log.Printf("error: %s\n", name)
 		}
 
-		log.Printf("ID: %d, NAME: %s, TWITTER_HASH_TAG: %s, TWITCH_CHANNEL: %s\n", res.User.Id, res.User.Name, res.User.TwitterHashTag, res.User.TwitchChannel)
+		log.Printf(
+			"ID: %d, NAME: %s, TWITTER_HASH_TAG: %s, TWITCH_CHANNEL: %s, TEXT_SIZE: %s, TEXT_COLOR: %s, ICON_SIZE: %s\n",
+			res.User.Id, res.User.Name, res.User.TwitterHashTag, res.User.TwitchChannel, res.User.TextSize, res.User.TextColor, res.User.IconSize,
+		)
 	}
 }

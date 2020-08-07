@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	defaultName = "alitaso345"
+	defaultName   = "alitaso345"
 	defaultTarget = "localhost:8080"
 )
 
@@ -35,7 +35,10 @@ func main() {
 	res, err := client.CreateUser(ctx, &pb.NewUserRequest{Name: name})
 	errorHandler(err, "failed to create user")
 
-	log.Printf("ID: %d, NAME: %s, TWITTER_HASH_TAG: %s, TWITCH_CHANNEL: %s\n", res.User.Id, res.User.Name, res.User.TwitterHashTag, res.User.TwitchChannel)
+	log.Printf(
+		"ID: %d, NAME: %s, TWITTER_HASH_TAG: %s, TWITCH_CHANNEL: %s, TEXT_SIZE: %s, TEXT_COLOR: %s, ICON_SIZE: %s\n",
+		res.User.Id, res.User.Name, res.User.TwitterHashTag, res.User.TwitchChannel, res.User.TextSize, res.User.TextColor, res.User.IconSize,
+	)
 }
 
 func errorHandler(err error, msg string) {
