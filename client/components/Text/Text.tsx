@@ -99,7 +99,7 @@ export const Text: React.FC<Props> = ({
   <span
     className={`font-sans ${sizeMap(size as TextSizeType)} ${
       platform !== null
-        ? platformColorMap(platform)
+        ? `font-bold ${platformColorMap(platform)}`
         : colorMap(color as TextColorType)
     }`}
   >
