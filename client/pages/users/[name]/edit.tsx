@@ -12,7 +12,7 @@ import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
 import Header from 'components/Header/Header'
 import { ChatItem, IconSize } from 'components/ChatItem/ChatItem'
-import { TextSize, TextSizeType } from 'components/Text/Text'
+import { TextSize, TextSizeType, TextColor } from 'components/Text/Text'
 
 type Props = {
   name: string
@@ -22,6 +22,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
   const [twitterHashTag, setTwitterHashTag] = useState('')
   const [twitchChannel, setTwitchChannel] = useState('')
   const [fontSize, setFontSize] = useState('')
+  const [textColor, setTextColor] = useState('')
   const [iconSize, setIconSize] = useState('')
 
   const itemMock: TimelineResponse = new TimelineResponse()
@@ -46,6 +47,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
       setTwitterHashTag(res.getUser().getTwitterhashtag())
       setTwitchChannel(res.getUser().getTwitchchannel())
       setFontSize(res.getUser().getTextsize())
+      setTextColor(res.getUser().getTextcolor())
       setIconSize(res.getUser().getIconsize())
     })
   }, [])
@@ -60,9 +62,8 @@ const UserEdit: NextPage<Props> = ({ name }) => {
     updatedUser.setName(user.getName())
     updatedUser.setTwitterhashtag(twitterHashTag)
     updatedUser.setTwitchchannel(twitchChannel)
-    console.log(fontSize)
     updatedUser.setTextsize(fontSize)
-    updatedUser.setTextcolor('BLACK')
+    updatedUser.setTextcolor(textColor)
     updatedUser.setIconsize(iconSize)
     request.setUser(updatedUser)
 
@@ -74,7 +75,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
 
       alert('設定を更新しました')
     })
-  }, [user, twitterHashTag, twitchChannel, fontSize])
+  }, [user, twitterHashTag, twitchChannel, fontSize, textColor, iconSize])
 
   const initSetting = useCallback(() => {
     const userServiceClient = new SynchronicityServiceClient(
@@ -186,6 +187,43 @@ const UserEdit: NextPage<Props> = ({ name }) => {
             <div className="md:flex md:items-center mb-6">
               <div className="md:w-1/3">
                 <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                  テキストカラー
+                </label>
+              </div>
+              <div className="md:w-2/3 relative">
+                <select
+                  value={textColor}
+                  onChange={(e) => setTextColor(e.target.value)}
+                  className="block appearance-none w-full bg-gray-200 py-2 px-4 border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                >
+                  <option>{TextColor.BLACK}</option>
+                  <option>{TextColor.WHITE}</option>
+                  <option>{TextColor.GRAY}</option>
+                  <option>{TextColor.RED}</option>
+                  <option>{TextColor.ORANGE}</option>
+                  <option>{TextColor.YELLOW}</option>
+                  <option>{TextColor.GREEN}</option>
+                  <option>{TextColor.TEAL}</option>
+                  <option>{TextColor.BLUE}</option>
+                  <option>{TextColor.INDIGO}</option>
+                  <option>{TextColor.PURPLE}</option>
+                  <option>{TextColor.PINK}</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg
+                    className="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
                   アイコンサイズ
                 </label>
               </div>
@@ -255,7 +293,12 @@ const UserEdit: NextPage<Props> = ({ name }) => {
       )}
 
       <div className="flex justify-center">
-        <ChatItem item={itemMock} textSize={fontSize} iconSize={iconSize} />
+        <ChatItem
+          item={itemMock}
+          textSize={fontSize}
+          textColor={textColor}
+          iconSize={iconSize}
+        />
       </div>
     </>
   )

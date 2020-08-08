@@ -23,6 +23,7 @@ export const Timeline: React.FC<Props> = ({ user, responses }) => {
         <ChatItem
           item={item}
           textSize={user.getTextsize()}
+          textColor={user.getTextcolor()}
           iconSize={user.getIconsize()}
           key={index}
         />

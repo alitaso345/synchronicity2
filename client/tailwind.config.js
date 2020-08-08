@@ -4,7 +4,12 @@ module.exports = {
     container: {
       center: true,
     },
-    extend: {},
+    extend: {
+      textColor: {
+        'twitter': '#00ACEE',
+        'twitch': '#6441a5',
+      },
+    },
   },
   variants: {},
   plugins: [],

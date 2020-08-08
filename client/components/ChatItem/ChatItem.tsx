@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { emoteData } from 'components/emoteData'
 import { TimelineResponse, PlatformType } from 'proto/synchronicity_pb'
-import { Text, TextSizeType, TextSize } from 'components/Text/Text'
+import { Text, TextSizeType, TextSize, TextColor } from 'components/Text/Text'
 
 type Props = {
   item: TimelineResponse
   textSize?: string
+  textColor?: string
   iconSize?: string
 }
 
@@ -39,6 +40,7 @@ const sizeMap = (size: IconSizeType) => {
 export const ChatItem: React.FC<Props> = ({
   item,
   textSize = TextSize.M,
+  textColor = TextColor.BLACK,
   iconSize = IconSize.M,
 }) => (
   <div className="flex items-center mb-1">
@@ -77,7 +79,7 @@ export const ChatItem: React.FC<Props> = ({
         }
 
         return (
-          <Text key={i} size={textSize}>
+          <Text key={i} size={textSize} color={textColor}>
             {t}
           </Text>
         )

@@ -76,25 +76,6 @@ func (s Size) String() string {
 	}
 }
 
-func ToSize(s string) Size {
-	switch s {
-	case "XS":
-		return XS
-	case "S":
-		return S
-	case "M":
-		return M
-	case "L":
-		return L
-	case "XL":
-		return XL
-	case "XXL":
-		return XXL
-	default:
-		return M
-	}
-}
-
 type Color int
 
 const (
