@@ -150,7 +150,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
             </div>
 
             <h2 className="font-sans text-grap-800 text-center text-4xl">
-              コメント表示設定(実装中)
+              コメント表示設定
             </h2>
 
             <div className="md:flex md:items-center mb-6">
