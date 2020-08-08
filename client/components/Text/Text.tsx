@@ -42,7 +42,7 @@ const platformColorMap = (platform: Maybe<PlatformType>) => {
 }
 
 type Props = React.HTMLAttributes<HTMLSpanElement> & {
-  size?: TextSizeType
+  size?: string
   platform?: PlatformType
 }
 
@@ -52,7 +52,7 @@ export const Text: React.FC<Props> = ({
   platform = null,
 }) => (
   <span
-    className={`font-sans ${sizeMap(size)}`}
+    className={`font-sans ${sizeMap(size as TextSizeType)}`}
     style={{
       color: platformColorMap(platform),
     }}

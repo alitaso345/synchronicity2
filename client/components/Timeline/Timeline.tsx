@@ -1,13 +1,14 @@
 import * as React from 'react'
 import { useEffect } from 'react'
-import { TimelineResponse } from 'proto/synchronicity_pb'
+import { TimelineResponse, User } from 'proto/synchronicity_pb'
 import { ChatItem } from 'components/ChatItem/ChatItem'
 
 type Props = {
+  user: User | null
   responses: TimelineResponse[]
 }
 
-export const Timeline: React.FC<Props> = ({ responses }) => {
+export const Timeline: React.FC<Props> = ({ user, responses }) => {
   useEffect(() => {
     const element = document.documentElement
     if (element !== null) {
@@ -19,7 +20,12 @@ export const Timeline: React.FC<Props> = ({ responses }) => {
   return (
     <div id="feedbox">
       {responses.map((item, index) => (
-        <ChatItem item={item} key={index} />
+        <ChatItem
+          item={item}
+          textSize={user.getTextsize()}
+          iconSize={user.getIconsize()}
+          key={index}
+        />
       ))}
     </div>
   )

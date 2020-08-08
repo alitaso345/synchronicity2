@@ -5,15 +5,47 @@ import { Text, TextSizeType, TextSize } from 'components/Text/Text'
 
 type Props = {
   item: TimelineResponse
-  textSize?: TextSizeType
+  textSize?: string
+  iconSize?: string
 }
 
-export const ChatItem: React.FC<Props> = ({ item, textSize = TextSize.M }) => (
+export const IconSize = {
+  XS: 'XS',
+  S: 'S',
+  M: 'M',
+  L: 'L',
+  XL: 'XL',
+  XXL: 'XXL',
+} as const
+export type IconSizeType = typeof IconSize[keyof typeof TextSize]
+
+const sizeMap = (size: IconSizeType) => {
+  switch (size) {
+    case TextSize.XXL:
+      return 'w-14 h-14'
+    case TextSize.XL:
+      return 'w-12 h-12'
+    case TextSize.L:
+      return 'w-10 h-10'
+    case TextSize.M:
+      return 'w-8 h-8'
+    case TextSize.S:
+      return 'w-6 h-6'
+    case TextSize.XS:
+      return 'w-4 h-4'
+  }
+}
+
+export const ChatItem: React.FC<Props> = ({
+  item,
+  textSize = TextSize.M,
+  iconSize = IconSize.M,
+}) => (
   <div className="flex items-center mb-1">
     <img
-      className="rounded-full mr-1"
-      width="20"
-      height="20"
+      className={`${sizeMap(iconSize as IconSizeType)} wrounded-full mr-1`}
+      width="50"
+      height="50"
       src={
         item.getPlatformType() === PlatformType.TWITTER
           ? '/Twitter_Social_Icon_Circle_Color.png'

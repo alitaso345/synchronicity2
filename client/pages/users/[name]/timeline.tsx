@@ -1,7 +1,12 @@
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { GetTimelineRequest, TimelineResponse } from 'proto/synchronicity_pb'
+import {
+  GetTimelineRequest,
+  TimelineResponse,
+  User,
+  GetUserRequest,
+} from 'proto/synchronicity_pb'
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
 import { Timeline } from 'components/Timeline/Timeline'
@@ -12,8 +17,22 @@ type Props = {
 
 const TimeLinePage: NextPage<Props> = ({ name }) => {
   const [responses, update] = useState<TimelineResponse[]>([])
+  const [user, setUser] = useState<User>(null)
 
   useEffect(() => {
+    const userServiceClient = new SynchronicityServiceClient(
+      apiEndpoint(window.location.host)
+    )
+    const userRequest = new GetUserRequest()
+    userRequest.setName(name)
+    userServiceClient.getUser(userRequest, {}, (err, res) => {
+      if (err) {
+        return
+      }
+
+      setUser(res.getUser())
+    })
+
     const request = new GetTimelineRequest()
     request.setUsername(name as string)
 
@@ -39,7 +58,7 @@ const TimeLinePage: NextPage<Props> = ({ name }) => {
   }, [])
 
   return responses.length > 0 ? (
-    <Timeline responses={responses} />
+    <Timeline user={user} responses={responses} />
   ) : (
     <div className="flex items-center">
       <div className="m-2">タイムライン取得中...</div>

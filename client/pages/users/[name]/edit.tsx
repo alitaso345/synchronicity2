@@ -11,7 +11,7 @@ import {
 import { SynchronicityServiceClient } from 'proto/SynchronicityServiceClientPb'
 import { apiEndpoint } from 'resources/constants'
 import Header from 'components/Header/Header'
-import { ChatItem } from 'components/ChatItem/ChatItem'
+import { ChatItem, IconSize } from 'components/ChatItem/ChatItem'
 import { TextSize, TextSizeType } from 'components/Text/Text'
 
 type Props = {
@@ -21,7 +21,8 @@ const UserEdit: NextPage<Props> = ({ name }) => {
   const [user, setUser] = useState<User>(null)
   const [twitterHashTag, setTwitterHashTag] = useState('')
   const [twitchChannel, setTwitchChannel] = useState('')
-  const [fontSize, setFontSize] = useState(TextSize.M.toString())
+  const [fontSize, setFontSize] = useState('')
+  const [iconSize, setIconSize] = useState('')
 
   const itemMock: TimelineResponse = new TimelineResponse()
   itemMock.setName('ino_tac')
@@ -45,6 +46,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
       setTwitterHashTag(res.getUser().getTwitterhashtag())
       setTwitchChannel(res.getUser().getTwitchchannel())
       setFontSize(res.getUser().getTextsize())
+      setIconSize(res.getUser().getIconsize())
     })
   }, [])
 
@@ -61,7 +63,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
     console.log(fontSize)
     updatedUser.setTextsize(fontSize)
     updatedUser.setTextcolor('BLACK')
-    updatedUser.setIconsize('M')
+    updatedUser.setIconsize(iconSize)
     request.setUser(updatedUser)
 
     userServiceClient.updateUser(request, {}, (err, res) => {
@@ -188,13 +190,17 @@ const UserEdit: NextPage<Props> = ({ name }) => {
                 </label>
               </div>
               <div className="md:w-2/3 relative">
-                <select className="block appearance-none w-full bg-gray-200 py-2 px-4 border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-                  <option>xs</option>
-                  <option>sm</option>
-                  <option>base</option>
-                  <option>lg</option>
-                  <option>xl</option>
-                  <option>2xl</option>
+                <select
+                  value={iconSize}
+                  onChange={(e) => setIconSize(e.target.value)}
+                  className="block appearance-none w-full bg-gray-200 py-2 px-4 border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                >
+                  <option>{IconSize.XS}</option>
+                  <option>{IconSize.S}</option>
+                  <option>{IconSize.M}</option>
+                  <option>{IconSize.L}</option>
+                  <option>{IconSize.XL}</option>
+                  <option>{IconSize.XXL}</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                   <svg
@@ -249,7 +255,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
       )}
 
       <div className="flex justify-center">
-        <ChatItem item={itemMock} textSize={fontSize as TextSizeType} />
+        <ChatItem item={itemMock} textSize={fontSize} iconSize={iconSize} />
       </div>
     </>
   )
