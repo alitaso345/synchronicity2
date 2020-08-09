@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: gcr.io/synchronicity2/synchronicity2-client:v9
+          image: gcr.io/synchronicity2/synchronicity2-client:v10
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
