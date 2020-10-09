@@ -28,7 +28,7 @@ const UserEdit: NextPage<Props> = ({ name }) => {
   const itemMock: TimelineResponse = new TimelineResponse()
   itemMock.setName('ino_tac')
   itemMock.setMessage(
-    '私まわ〜る mograInotaku 、君はおど〜る mograWildP 、ミラーボール・ラ〜ブ mograKz ！って歌いながらバリウム検査の回転台に乗るワ'
+    '私まわ〜る mograInotaku 君はおど〜る mograWildP ミラーボール・ラ〜ブ mograKz ！って歌いながらバリウム検査の回転台に乗るワ'
   )
   itemMock.setPlatformType(PlatformType.TWITTER)
 

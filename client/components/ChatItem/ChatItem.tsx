@@ -43,9 +43,11 @@ export const ChatItem: React.FC<Props> = ({
   textColor = TextColor.BLACK,
   iconSize = IconSize.M,
 }) => (
-  <div className="flex items-center mb-1">
+  <div className="mb-1">
     <img
-      className={`${sizeMap(iconSize as IconSizeType)} wrounded-full mr-1`}
+      className={`${sizeMap(
+        iconSize as IconSizeType
+      )} wrounded-full mr-1 inline`}
       width="50"
       height="50"
       src={
@@ -68,6 +70,7 @@ export const ChatItem: React.FC<Props> = ({
           if (emote.name === t) {
             return (
               <img
+                className="inline"
                 key={i}
                 src={emote.url}
                 width={emote.width}

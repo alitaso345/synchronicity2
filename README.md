@@ -9,7 +9,7 @@ Input your environment variables
 
 ```
 $docker-compose up proxy
-$cd client & yarn dev
+$cd client & yarn install && yarn dev
 ```
 
 # deploy
