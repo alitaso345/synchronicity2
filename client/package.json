@@ -11,7 +11,7 @@
   "dependencies": {
     "google-protobuf": "^4.0.0-rc.1",
     "grpc-web": "^1.2.0",
-    "next": "9.4.4",
+    "next": "11.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
